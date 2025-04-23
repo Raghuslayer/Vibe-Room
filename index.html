@@ -250,29 +250,43 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 5px;
+      gap: 8px;
       color: rgba(255, 255, 255, 0.6);
       text-decoration: none;
       transition: all 0.3s ease;
       position: relative;
+      padding: 10px;
+      border-radius: 10px;
+    }
+    
+    .nav-item:hover {
+      color: #FF7B54;
+      background: rgba(255, 255, 255, 0.1);
+      transform: scale(1.1);
     }
     
     .nav-item.active {
       color: #FF7B54;
+      background: rgba(255, 255, 255, 0.1);
     }
     
     .nav-item.active::after {
       content: '';
       position: absolute;
-      bottom: -15px;
-      width: 5px;
-      height: 5px;
-      background: #FF7B54;
-      border-radius: 50%;
+      bottom: -10px;
+      width: 30px;
+      height: 3px;
+      background: linear-gradient(90deg, #FF7B54, #FFB26B);
+      border-radius: 2px;
     }
     
     .nav-item i {
-      font-size: 22px;
+      font-size: 24px;
+      transition: all 0.3s ease;
+    }
+    
+    .nav-item.active i {
+      text-shadow: 0 0 10px rgba(255, 123, 84, 0.5);
     }
     
     .nav-item span {
@@ -501,7 +515,7 @@
     // Navigation highlight
     const navItems = document.querySelectorAll('.nav-item');
     navItems.forEach(item => {
-      item.addEventListener('click', (e) => {
+      item.addEventListener('header', (e) => {
         e.preventDefault();
         navItems.forEach(i => i.classList.remove('active'));
         item.classList.add('active');
