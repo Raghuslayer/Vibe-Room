@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VibeShare - VibeRoom</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+    
+    body {
+      background: linear-gradient(135deg, #13111C 0%, #221C3E 100%);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    header {
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .logo {
+      font-size: 24px;
+      font-weight: 700;
+      background: linear-gradient(90deg, #FF7B54, #FFB26B);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 10px rgba(255, 123, 84, 0.3);
+    }
+    
+    .search-bar {
+      position: relative;
+      width: 40%;
+    }
+    
+    .search-bar input {
+      width: 100%;
+      padding: 12px 20px;
+      border-radius: 25px;
+      border: none;
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+    
+    .search-bar input:focus {
+      outline: none;
+      background: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 0 15px rgba(255, 123, 84, 0.2);
+    }
+    
+    .search-bar i {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: rgba(255, 255, 255, 0.6);
+    }
+    
+    .notification {
+      background: rgba(255, 255, 255, 0.1);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    
+    .notification:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+    
+    .notification::after {
+      content: '';
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: #FF7B54;
+      border-radius: 50%;
+      top: 5px;
+      right: 5px;
+    }
+    
+    main {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+    }
+    
+    .section-heading {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .section-heading i {
+      color: #FF7B54;
+    }
+    
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    
+    .card {
+      border-radius: 15px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.3s ease;
+    }
+    
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .card-img {
+      height: 160px;
+      overflow: hidden;
+      position: relative;
+    }
+    
+    .card-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    
+    .card:hover .card-img img {
+      transform: scale(1.1);
+    }
+    
+    .card-info {
+      padding: 15px;
+    }
+    
+    .card-title {
+      font-weight: 600;
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
+    
+    .card-meta {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.7);
+    }
+    
+    .card-meta div {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    
+    .filter-bar {
+      margin-bottom: 20px;
+    }
+    
+    .filter-bar select {
+      padding: 10px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      border: none;
+      font-size: 14px;
+    }
+    
+    .join-btn {
+      background: #FF7B54;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 20px;
+      color: white;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    
+    .gradient-card {
+      background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+      color: white;
+      padding: 20px;
+      border-radius: 15px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .gradient-card-icon {
+      background: rgba(255, 255, 255, 0.2);
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+    
+    .gradient-card-text h3 {
+      font-size: 18px;
+      margin-bottom: 5px;
+    }
+    
+    .gradient-card-text p {
+      font-size: 14px;
+      opacity: 0.8;
+    }
+    
+    nav {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-around;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: rgba(255, 255, 255, 0.6);
+      text-decoration: none;
+      transition: all 0.3s ease;
+      position: relative;
+      padding: 10px;
+      border-radius: 10px;
+    }
+    
+    .nav-item:hover {
+      color: #FF7B54;
+      background: rgba(255, 255, 255, 0.1);
+      transform: scale(1.1);
+    }
+    
+    .nav-item.active {
+      color: #FF7B54;
+      background: rgba(255, 255, 255, 0.1);
+    }
+    
+    .nav-item.active::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      width: 30px;
+      height: 3px;
+      background: linear-gradient(90deg, #FF7B54, #FFB26B);
+      border-radius: 2px;
+    }
+    
+    .nav-item i {
+      font-size: 24px;
+      transition: all 0.3s ease;
+    }
+    
+    .nav-item.active i {
+      text-shadow: 0 0 10px rgba(255, 123, 84, 0.5);
+    }
+    
+    .nav-item span {
+      font-size: 12px;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">VibeShare</div>
+    <div class="search-bar">
+      <input type="text" placeholder="Search for rooms or topics..." id="room-search">
+      <i class="fas fa-search"></i>
+    </div>
+    <div class="notification">
+      <i class="fas fa-bell"></i>
+    </div>
+  </header>
+  
+  <main>
+    <div class="gradient-card">
+      <div class="gradient-card-icon">
+        <i class="fas fa-music"></i>
+      </div>
+      <div class="gradient-card-text">
+        <h3>Discover Vibe Rooms</h3>
+        <p>Join live rooms and vibe with others!</p>
+      </div>
+    </div>
+    
+    <section class="vibe-rooms">
+      <div class="section-heading">
+        <i class="fas fa-fire"></i> All Vibe Rooms
+      </div>
+      <div class="filter-bar">
+        <select id="category-filter">
+          <option value="all">All Categories</option>
+          <option value="Music">Music</option>
+          <option value="Gaming">Gaming</option>
+          <option value="Study">Study</option>
+          <option value="Fitness">Fitness</option>
+          <option value="Creative">Creative</option>
+        </select>
+      </div>
+      <div class="cards" id="room-cards">
+        <!-- Dynamically populated -->
+      </div>
+    </section>
+  </main>
+  
+  <nav>
+    <a href="index.html" class="nav-item">
+      <i class="fas fa-home"></i>
+      <span>Home</span>
+    </a>
+    <a href="viberoom.html" class="nav-item active">
+      <i class="fas fa-music"></i>
+      <span>VibeRoom</span>
+    </a>
+    <a href="buddies.html" class="nav-item">
+      <i class="fas fa-user-group"></i>
+      <span>Buddies</span>
+    </a>
+    <a href="profile.html" class="nav-item">
+      <i class="fas fa-user"></i>
+      <span>Profile</span>
+    </a>
+  </nav>
+  
+  <script>
+    const rooms = [
+      { title: "Late Night Lofi", category: "Music", users: 328, img: "/api/placeholder/400/320" },
+      { title: "Gaming Squad", category: "Gaming", users: 412, img: "/api/placeholder/400/320" },
+      { title: "Chill Study Session", category: "Study", users: 128, img: "/api/placeholder/400/320" },
+      { title: "Workout Motivation", category: "Fitness", users: 196, img: "/api/placeholder/400/320" },
+      { title: "Art Showcase", category: "Creative", users: 173, img: "/api/placeholder/400/320" }
+    ];
+
+    function renderRooms(filter = "all", search = "") {
+      const roomCards = document.getElementById("room-cards");
+      roomCards.innerHTML = "";
+      let filteredRooms = filter === "all" ? rooms : rooms.filter(room => room.category === filter);
+      if (search) {
+        filteredRooms = filteredRooms.filter(room => room.title.toLowerCase().includes(search.toLowerCase()));
+      }
+      
+      filteredRooms.forEach(room => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <div class="card-img">
+            <img src="${room.img}" alt="Vibe Room">
+          </div>
+          <div class="card-info">
+            <div class="card-title">${room.title}</div>
+            <div class="card-meta">
+              <div><i class="fas fa-user"></i> ${room.users}</div>
+              <div><i class="fas fa-tag"></i> ${room.category}</div>
+            </div>
+            <button class="join-btn" data-room="${room.title}">Join Room</button>
+          </div>
+        `;
+        roomCards.appendChild(card);
+      });
+
+      document.querySelectorAll(".join-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const roomTitle = btn.getAttribute("data-room");
+          alert(`Joined ${roomTitle}!`);
+          const joinedRooms = JSON.parse(localStorage.getItem("joinedRooms") || "[]");
+          if (!joinedRooms.includes(roomTitle)) {
+            joinedRooms.push(roomTitle);
+            localStorage.setItem("joinedRooms", JSON.stringify(joinedRooms));
+          }
+        });
+      });
+    }
+
+    document.getElementById("category-filter").addEventListener("change", (e) => {
+      renderRooms(e.target.value, document.getElementById("room-search").value);
+    });
+
+    document.getElementById("room-search").addEventListener("input", (e) => {
+      renderRooms(document.getElementById("category-filter").value, e.target.value);
+    });
+
+    // Navigation highlight
+    const navItems = document.querySelectorAll('.nav-item');
+    navItems.forEach(item => {
+      item.addEventListener('click', (e) => {
+        e.preventDefault();
+        navItems.forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+        window.location.href = item.href;
+      }); 
+    });
+
+    renderRooms();
+  </script>
+</body>
+</html>
