@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VibeRoom - Login / Sign Up</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Great+Vibes&display=swap');
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+    
+    body {
+      background: url('https://res.cloudinary.com/dpragculd/image/upload/v1748926358/StockCake-Floating_Emoji_Dreams_1748924198_e1beq3.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      overflow: hidden;
+      perspective: 1000px;
+      backdrop-filter: blur(10px);
+    }
+    
+    .auth-container {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      padding: 40px;
+      width: 90%;
+      max-width: 400px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      z-index: 1;
+      position: relative;
+      transition: transform 0.2s ease-out;
+      transform-style: preserve-3d;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding-bottom: 20px;
+    }
+    
+    @media (max-width: 768px) {
+      .auth-container {
+        width: 99%;
+        max-width: none;
+        padding: 20px;
+      }
+    }
+    
+    .auth-container::-webkit-scrollbar {
+      width: 8px;
+    }
+    
+    .auth-container::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+    }
+    
+    .auth-container::-webkit-scrollbar-thumb {
+      background: rgba(138, 43, 226, 0.5);
+      border-radius: 10px;
+    }
+    
+    .auth-container::-webkit-scrollbar-thumb:hover {
+      background: rgba(138, 43, 226, 0.7);
+    }
+    
+    .auth-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    .auth-header .logo {
+      font-size: 48px;
+      font-weight: 800;
+      color: #fff;
+      text-shadow: 0 0 10px rgba(255, 215, 0, 0.7), 0 0 20px rgba(255, 215, 0, 0.5);
+      margin-bottom: 10px;
+      letter-spacing: 2px;
+      animation: pulseGold 2s infinite alternate;
+    }
+    
+    @keyframes pulseGold {
+      0% {
+        transform: scale(1);
+        text-shadow: 0 0 10px rgba(255, 215, 0, 0.7), 0 0 20px rgba(255, 215, 0, 0.5);
+      }
+      100% {
+        transform: scale(1.02);
+        text-shadow: 0 0 15px rgba(255, 215, 0, 0.9), 0 0 25px rgba(255, 215, 0, 0.7);
+      }
+    }
+    
+    .auth-header p {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 14px;
+    }
+    
+    .auth-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: all 0.3s ease-in-out;
+      overflow: hidden;
+    }
+    
+    .form-group.hidden-field {
+      opacity: 0;
+      height: 0;
+      margin-top: 0;
+      margin-bottom: 0;
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+    
+    .form-group label {
+      font-size: 14px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.9);
+    }
+    
+    .form-group input,
+    .form-group select {
+      padding: 12px 20px;
+      border-radius: 10px;
+      border: none;
+      background: rgba(138, 43, 226, 0.2);
+      backdrop-filter: blur(5px);
+      color: #fff;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+    
+    .form-group input:focus,
+    .form-group select:focus {
+      outline: none;
+      background: rgba(138, 43, 226, 0.3);
+      box-shadow: 0 0 15px rgba(138, 43, 226, 0.5);
+    }
+    
+    .form-group input::placeholder {
+      color: rgba(255, 255, 255, 0.6);
+    }
+    
+    .auth-btn {
+      background: linear-gradient(90deg, #8A2BE2, #4B0082);
+      border: none;
+      padding: 12px;
+      border-radius: 25px;
+      color: white;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .auth-btn:hover {
+      box-shadow: 0 0 15px rgba(138, 43, 226, 0.5);
+      transform: translateY(-2px);
+    }
+    
+    .social-login {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    
+    .social-btn {
+      background: rgba(255, 255, 255, 0.1);
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .social-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: scale(1.1);
+    }
+    
+    .social-btn i {
+      font-size: 20px;
+      color: #fff;
+    }
+    
+    .toggle-auth {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.7);
+    }
+    
+    .toggle-auth a {
+      color: #8A2BE2;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    
+    .toggle-auth a:hover {
+      text-decoration: underline;
+    }
+    
+    .error-message {
+      color: #FF7B54;
+      font-size: 12px;
+      text-align: center;
+      margin-top: 10px;
+      display: none;
+    }
+    
+    .custom-modal {
+      display: none;
+      position: fixed;
+      z-index: 100;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.4);
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .custom-modal-content {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      margin: auto;
+      padding: 20px;
+      width: 80%;
+      max-width: 300px;
+      border-radius: 10px;
+      text-align: center;
+      color: #fff;
+    }
+    
+    .custom-modal-content h3 {
+      margin-bottom: 15px;
+      color: #fff;
+      text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+    }
+    
+    .custom-modal-content button {
+      background: linear-gradient(90deg, #8A2BE2, #4B0082);
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: all 0.3s ease;
+    }
+    
+    .custom-modal-content button:hover {
+      box-shadow: 0 0 10px rgba(138, 43, 226, 0.6);
+      transform: translateY(-1px);
+    }
+    
+    #loading-screen {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(10px);
+      z-index: 99;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      color: #fff;
+      font-size: 3em;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-shadow: 0 0 15px rgba(255, 215, 0, 0.8), 0 0 25px rgba(255, 215, 0, 0.6);
+      animation: fadeIn 0.5s ease-out forwards;
+    }
+    
+    #loading-screen.hidden {
+      animation: fadeOut 0.5s ease-out forwards;
+    }
+    
+    #loading-screen p {
+      margin-top: 20px;
+      font-size: 0.5em;
+      opacity: 0.8;
+      animation: pulseText 2s infinite alternate;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    @keyframes fadeOut {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
+    
+    @keyframes vibingAnimation {
+      0% { 
+        transform: scale(1) translateY(0) skewX(0); 
+        opacity: 1; 
+        text-shadow: 0 0 15px rgba(255, 215, 0, 0.8), 0 0 25px rgba(255, 215, 0, 0.6);
+      }
+      25% {
+        transform: scale(1.02) translateY(-2px) skewX(2deg);
+        opacity: 0.9;
+        text-shadow: 0 0 20px rgba(255, 215, 0, 0.9), 0 0 30px rgba(255, 215, 0, 0.7);
+      }
+      50% { 
+        transform: scale(1.05) translateY(0) skewX(-2deg); 
+        opacity: 1; 
+        text-shadow: 0 0 25px rgba(255, 215, 0, 1), 0 0 35px rgba(255, 215, 0, 0.8);
+      }
+      75% {
+        transform: scale(1.02) translateY(2px) skewX(2deg);
+        opacity: 0.9;
+        text-shadow: 0 0 20px rgba(255, 215, 0, 0.9), 0 0 30px rgba(255, 215, 0, 0.7);
+      }
+      100% { 
+        transform: scale(1) translateY(0) skewX(0); 
+        opacity: 1; 
+        text-shadow: 0 0 15px rgba(255, 215, 0, 0.8), 0 0 25px rgba(255, 215, 0, 0.6);
+      }
+    }
+    
+    @keyframes pulseText {
+      0%, 100% { opacity: 0.8; }
+      50% { opacity: 1; }
+    }
+    
+    #loading-screen .loading-text {
+      font-family: 'Great Vibes', cursive;
+      animation: vibingAnimation 2s infinite ease-in-out;
+    }
+  </style>
+</head>
+<body>
+  <div class="auth-container" id="auth-container">
+    <div class="auth-header">
+      <div class="logo">VibeRoom</div> 
+      <p id="auth-subtitle">Sign up to join the vibe!</p>
+    </div>
+    <form class="auth-form" id="auth-form">
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" placeholder="e.g., @raghu_07">
+      </div>
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" id="name" placeholder="Enter your name">
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="Enter email">
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Enter password">
+      </div>
+      <div class="form-group" id="dob-group">
+        <label for="dob">Date of Birth</label>
+        <input type="date" id="dob">
+      </div>
+      <div class="form-group" id="gender-group">
+        <label for="gender">Gender</label>
+        <select id="gender">
+          <option value="">Select Gender</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+          <option value="Other">Other</option>
+          <option value="Prefer not to say">Prefer not to say</option>
+        </select>
+      </div>
+      <div class="form-group" id="country-group">
+        <label for="country">Country</label>
+        <select id="country">
+          <option value="">Select Country</option>
+          <option value="US">United States</option>
+          <option value="IN">India</option>
+          <option value="UK">United Kingdom</option>
+        </select>
+      </div>
+      <div class="form-group" id="language-group">
+        <label for="language">Preferred Language</label>
+        <select id="language">
+          <option value="">Select Language</option>
+          <option value="English">English</option>
+          <option value="Hindi">Hindi</option>
+          <option value="Spanish">Spanish</option>
+        </select>
+      </div>
+      <button type="submit" class="auth-btn" id="auth-btn">Sign Up</button>
+      <div class="error-message" id="error-message"></div>
+    </form>
+    <div class="social-login">
+      <div class="social-btn" id="google-login">
+        <i class="fab fa-google"></i>
+      </div>
+      <div class="social-btn" id="apple-login">
+        <i class="fab fa-apple"></i>
+      </div>
+    </div>
+    <div class="toggle-auth">
+      Already have an account? <a href="#" id="toggle-link">Log In</a>
+    </div>
+  </div>
+
+  <div id="customAlertModal" class="custom-modal">
+    <div class="custom-modal-content">
+      <h3 id="modalMessage"></h3>
+      <button id="modalCloseButton">OK</button>
+    </div>
+  </div>
+
+  <div id="loading-screen">
+    <div class="loading-text">Vibing...</div>
+    <p>Connecting your world, one vibe at a time!</p>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js';
+    import { 
+      getAuth, 
+      createUserWithEmailAndPassword, 
+      signInWithEmailAndPassword, 
+      GoogleAuthProvider, 
+      signInWithPopup,
+      updateProfile
+    } from 'https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js';
+    import { getFirestore, doc, setDoc, getDoc } from 'https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js';
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyC1Si1eckeNa-aF2RtQzIDckDhbvZlI66A",
+      authDomain: "viberoom-3af1f.firebaseapp.com",
+      projectId: "viberoom-3af1f",
+      storageBucket: "viberoom-3af1f.firebasestorage.app",
+      messagingSenderId: "84466588442",
+      appId: "1:84466588442:web:b2100ca39f2b25dba36aa3"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const provider = new GoogleAuthProvider();
+
+    const authContainer = document.getElementById('auth-container');
+    const form = document.getElementById('auth-form');
+    const authBtn = document.getElementById('auth-btn');
+    const authSubtitle = document.getElementById('auth-subtitle');
+    const toggleLink = document.getElementById('toggle-link');
+    const dobGroup = document.getElementById('dob-group');
+    const genderGroup = document.getElementById('gender-group');
+    const countryGroup = document.getElementById('country-group');
+    const languageGroup = document.getElementById('language-group');
+    const errorMessage = document.getElementById('error-message');
+    const loadingScreen = document.getElementById('loading-screen');
+    let isSignup = true;
+
+    const customAlertModal = document.getElementById('customAlertModal');
+    const modalMessage = document.getElementById('modalMessage');
+    const modalCloseButton = document.getElementById('modalCloseButton');
+
+    function showCustomAlert(message, redirect = false) {
+      modalMessage.textContent = message;
+      customAlertModal.style.display = 'flex';
+      if (redirect) {
+        modalCloseButton.addEventListener('click', () => {
+          window.location.href = 'profile.html';
+        }, { once: true });
+      }
+    }
+
+    modalCloseButton.addEventListener('click', () => {
+      customAlertModal.style.display = 'none';
+    });
+
+    function showError(message) {
+      errorMessage.textContent = message;
+      errorMessage.style.display = 'block';
+      setTimeout(() => {
+        errorMessage.style.display = 'none';
+      }, 3000);
+    }
+
+    function toggleAuthMode() {
+      isSignup = !isSignup;
+      authSubtitle.textContent = isSignup ? 'Sign up to join the vibe!' : 'Log in to your account';
+      authBtn.textContent = isSignup ? 'Sign Up' : 'Log In';
+      toggleLink.textContent = isSignup ? 'Log In' : 'Sign Up';
+      
+      dobGroup.classList.toggle('hidden-field', !isSignup);
+      genderGroup.classList.toggle('hidden-field', !isSignup);
+      countryGroup.classList.toggle('hidden-field', !isSignup);
+      languageGroup.classList.toggle('hidden-field', !isSignup);
+      document.getElementById('name').parentElement.classList.toggle('hidden-field', !isSignup);
+
+      document.getElementById('username').value = '';
+      document.getElementById('name').value = '';
+      document.getElementById('email').value = '';
+      document.getElementById('password').value = '';
+      document.getElementById('dob').value = '';
+      document.getElementById('gender').value = '';
+      document.getElementById('country').value = '';
+      document.getElementById('language').value = '';
+
+      errorMessage.style.display = 'none';
+    }
+
+    toggleLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      toggleAuthMode();
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!isSignup) {
+        dobGroup.classList.add('hidden-field');
+        genderGroup.classList.add('hidden-field');
+        countryGroup.classList.add('hidden-field');
+        languageGroup.classList.add('hidden-field');
+        document.getElementById('name').parentElement.classList.add('hidden-field');
+      }
+    });
+
+    function showLoadingScreen() {
+      loadingScreen.style.display = 'flex';
+      loadingScreen.classList.remove('hidden');
+    }
+
+    function hideLoadingScreen() {
+      loadingScreen.classList.add('hidden');
+      loadingScreen.addEventListener('animationend', () => {
+        loadingScreen.style.display = 'none';
+      }, { once: true });
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const username = document.getElementById('username').value.trim();
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      if (!email) {
+        showError('Please enter your email.');
+        return;
+      }
+      if (!password) {
+        showError('Please enter your password.');
+        return;
+      }
+
+      try {
+        if (isSignup) {
+          const dob = document.getElementById('dob').value;
+          const gender = document.getElementById('gender').value;
+          const country = document.getElementById('country').value;
+          const language = document.getElementById('language').value;
+
+          if (!username.startsWith('@') || username.length < 4) {
+            showError('Username must start with @ and be at least 4 characters');
+            return;
+          }
+          if (!name) {
+            showError('Please enter your name.');
+            return;
+          }
+          if (!dob) {
+            showError('Please enter your date of birth.');
+            return;
+          }
+          if (!gender) {
+            showError('Please select your gender.');
+            return;
+          }
+          if (!country) {
+            showError('Please select your country.');
+            return;
+          }
+          if (!language) {
+            showError('Please select your preferred language.');
+            return;
+          }
+
+          const dobDate = new Date(dob);
+          const today = new Date();
+          let age = today.getFullYear() - dobDate.getFullYear();
+          const monthDiff = today.getMonth() - dobDate.getMonth();
+          if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dobDate.getDate())) {
+            age--;
+          }
+          if (age < 13) {
+            showError('You must be at least 13 years old to sign up');
+            return;
+          }
+
+          showLoadingScreen();
+          const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+          const user = userCredential.user;
+          await updateProfile(user, { displayName: username });
+
+          await setDoc(doc(db, 'users', user.uid), {
+            username,
+            name,
+            email,
+            dob,
+            gender,
+            country,
+            language,
+            status: 'Online'
+          });
+
+          setTimeout(() => {
+            hideLoadingScreen();
+            showCustomAlert('Signed up successfully!', true);
+          }, 2000);
+          
+        } else {
+          showLoadingScreen();
+          await signInWithEmailAndPassword(auth, email, password);
+          
+          setTimeout(() => {
+            hideLoadingScreen();
+            showCustomAlert('Logged in successfully!', true);
+          }, 2000);
+        }
+      } catch (error) {
+        hideLoadingScreen();
+        switch (error.code) {
+          case 'auth/email-already-in-use':
+            showError('Email already in use');
+            break;
+          case 'auth/invalid-email':
+            showError('Invalid email format');
+            break;
+          case 'auth/weak-password':
+            showError('Password must be at least 6 characters');
+            break;
+          case 'auth/user-not-found':
+          case 'auth/wrong-password':
+            showError('Invalid email or password');
+            break;
+          default:
+            showError('An error occurred: ' + error.message);
+        }
+      }
+    });
+
+    document.getElementById('google-login').addEventListener('click', async () => {
+      try {
+        showLoadingScreen();
+        const result = await signInWithPopup(auth, provider);
+        const user = result.user;
+
+        const userDocRef = doc(db, 'users', user.uid);
+        const userDoc = await getDoc(userDocRef);
+        if (!userDoc.exists()) {
+          const userData = {
+            username: user.displayName || '@' + user.email.split('@')[0],
+            name: user.displayName || 'User',
+            email: user.email,
+            dob: '',
+            gender: 'Prefer not to say',
+            country: 'US',
+            language: 'English',
+            status: 'Online'
+          };
+          await setDoc(userDocRef, userData);
+        }
+
+        setTimeout(() => {
+          hideLoadingScreen();
+          showCustomAlert('Logged in with Google successfully!', true);
+        }, 2000);
+
+      } catch (error) {
+        hideLoadingScreen();
+        showError('Google login failed: ' + error.message);
+      }
+    });
+
+    document.getElementById('apple-login').addEventListener('click', () => {
+      showCustomAlert('Apple login not implemented yet');
+    });
+
+    const throttle = (func, limit) => {
+      let inThrottle;
+      return function() {
+        const args = arguments;
+        const context = this;
+        if (!inThrottle) {
+          func.apply(context, args);
+          inThrottle = true;
+          setTimeout(() => inThrottle = false, limit);
+        }
+      }
+    }
+
+    const handleMouseMove = (e) => {
+      const { clientX, clientY } = e;
+      const rect = authContainer.getBoundingClientRect();
+      const isMouseInsidePanel = 
+        clientX >= rect.left &&
+        clientX <= rect.right &&
+        clientY >= rect.top &&
+        clientY <= rect.bottom;
+
+      if (isMouseInsidePanel) {
+        authContainer.style.transform = 'rotateY(0deg) rotateX(0deg)';
+      } else {
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        const normalizedX = (clientX - (window.innerWidth / 2)) / (window.innerWidth / 2);
+        const normalizedY = (clientY - (window.innerHeight / 2)) / (window.innerHeight / 2);
+        const maxRotate = 15;
+        const rotateY = normalizedX * maxRotate;
+        const rotateX = normalizedY * -maxRotate;
+        authContainer.style.transform = `rotateY(${rotateY}deg) rotateX(${rotateX}deg)`;
+      }
+    };
+
+    document.addEventListener('mousemove', throttle(handleMouseMove, 16));
+    document.addEventListener('mouseleave', () => {
+      authContainer.style.transform = 'rotateY(0deg) rotateX(0deg)';
+    });
+  </script>
+</body>
+</html>
