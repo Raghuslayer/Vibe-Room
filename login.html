@@ -287,7 +287,7 @@
       height: 100%;
       background: rgba(0, 0, 0, 0.7);
       backdrop-filter: blur(10px);
-      z-index: 99;
+      z-index: 9999; /* Ensure it's on top */
       justify-content: center;
       align-items: center;
       flex-direction: column;
@@ -787,6 +787,593 @@
     .crop-buttons button.cancel-crop:hover {
       box-shadow: 0 0 10px rgba(255, 123, 84, 0.6);
     }
+
+    /* VibeRoom Specific Styles */
+    .viberoom-section {
+      background: linear-gradient(135deg, #13111C 0%, #221C3E 100%);
+      color: #fff;
+      min-height: 100vh;
+      display: none; /* Hidden by default */
+      flex-direction: column;
+      width: 100vw;
+      max-width: 100%;
+      padding: 0;
+      overflow-y: auto;
+      border-radius: 0;
+      box-shadow: none;
+      position: relative;
+      z-index: 2;
+    }
+
+    .viberoom-section main {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    .viberoom-section main::-webkit-scrollbar {
+      display: none;
+    }
+
+    .viberoom-options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .viberoom-option-card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(5px);
+      border-radius: 15px;
+      padding: 25px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 150px;
+    }
+
+    .viberoom-option-card:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateY(-5px) scale(1.02);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .viberoom-option-card i {
+      font-size: 40px;
+      margin-bottom: 15px;
+      color: #FF7B54;
+    }
+
+    .viberoom-option-card h3 {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    .viberoom-option-card p {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    /* Private Room Modal */
+    .private-room-modal {
+      display: none;
+      position: fixed;
+      z-index: 300;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.85);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .private-room-modal-content {
+      background: linear-gradient(135deg, #13111C 0%, #221C3E 100%);
+      border-radius: 15px;
+      padding: 30px;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      color: #fff;
+      text-align: center;
+      position: relative; /* For close button positioning */
+    }
+
+    .private-room-modal-content h3 {
+      font-size: 24px;
+      margin-bottom: 20px;
+      color: #FF7B54;
+    }
+
+    .private-room-modal-content .form-group {
+      margin-bottom: 20px;
+    }
+
+    .private-room-modal-content label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 16px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .private-room-modal-content input,
+    .private-room-modal-content select {
+      width: calc(100% - 40px); /* Adjust for padding */
+      padding: 12px 20px;
+      border-radius: 10px;
+      border: none;
+      background: rgba(138, 43, 226, 0.2);
+      color: #fff;
+      font-size: 16px;
+    }
+
+    .private-room-modal-content input::placeholder {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .private-room-modal-content button {
+      background: linear-gradient(90deg, #8A2BE2, #4B0082);
+      border: none;
+      padding: 12px 25px;
+      border-radius: 25px;
+      color: white;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 10px;
+    }
+
+    .private-room-modal-content button:hover {
+      box-shadow: 0 0 15px rgba(138, 43, 226, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .private-room-modal-content .close-button {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      background: none;
+      border: none;
+      font-size: 24px;
+      color: rgba(255, 255, 255, 0.7);
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+
+    .private-room-modal-content .close-button:hover {
+      color: #FF7B54;
+    }
+
+    /* Room Details Display */
+    .room-details-display {
+        margin-top: 20px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        text-align: left;
+    }
+    .room-details-display p {
+        font-size: 16px;
+        color: rgba(255, 255, 255, 0.8);
+    }
+    .room-details-display span {
+        font-weight: 600;
+        color: #FFB26B;
+    }
+    .room-details-display button.copy-button {
+        background: none;
+        border: none;
+        color: #FFB26B;
+        font-size: 14px;
+        cursor: pointer;
+        margin-left: 5px;
+        padding: 5px;
+        border-radius: 5px;
+        transition: background 0.2s ease;
+    }
+    .room-details-display button.copy-button:hover {
+        background: rgba(255, 255, 255, 0.1);
+    }
+    .room-details-display button#start-private-room {
+        margin-top: 10px;
+        background: #FF7B54;
+    }
+
+    /* Video Call Room Styles */
+    .video-call-room {
+      display: none; /* Hidden by default */
+      flex-direction: column;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background: #13111C;
+      position: relative;
+      border: 5px solid transparent; /* For RGB glowing line */
+      animation: none; /* Controlled by JS */
+    }
+
+    @keyframes glowing-border {
+      0% { border-color: #ff0000; }
+      16% { border-color: #ffff00; }
+      33% { border-color: #00ff00; }
+      50% { border-color: #00ffff; }
+      66% { border-color: #0000ff; }
+      83% { border-color: #ff00ff; }
+      100% { border-color: #ff0000; }
+    }
+
+    .video-call-room.music-active {
+      animation: glowing-border 6s infinite linear;
+    }
+
+
+    .video-call-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+      background: rgba(0, 0, 0, 0.3);
+      z-index: 10;
+    }
+
+    .video-call-header h2 {
+      font-size: 20px;
+      color: #FFB26B;
+    }
+
+    .video-call-header .room-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .video-call-header .room-actions button {
+      background: #FF7B54;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 15px;
+      color: white;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+
+    .video-call-header .room-actions button:hover {
+      background: #e66a4a;
+      transform: translateY(-1px);
+    }
+
+    .video-call-main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: row;
+      overflow: hidden;
+    }
+
+    .video-feeds-section {
+      flex: 3; /* Takes 75% width */
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Dynamic columns */
+      gap: 10px;
+      padding: 10px;
+      background: #221C3E;
+      overflow-y: auto;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .video-feeds-section::-webkit-scrollbar {
+      display: none;
+    }
+
+    .video-feed-container {
+      position: relative;
+      width: 100%;
+      padding-bottom: 75%; /* 4:3 aspect ratio for video, adjust as needed */
+      background-color: #000;
+      border-radius: 10px;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .video-feed-container video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    .video-feed-controls {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 20px;
+      padding: 5px 10px;
+      display: flex;
+      gap: 10px;
+      z-index: 5;
+    }
+
+    .video-feed-controls button {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+
+    .video-feed-controls button:hover {
+      color: #FF7B54;
+    }
+
+    .video-feed-controls button.active {
+      color: #8BC34A; /* Green for active */
+    }
+    .video-feed-controls button.inactive {
+      color: #FF7B54; /* Red for inactive */
+    }
+
+
+    .right-panel {
+      flex: 1; /* Takes 25% width */
+      display: flex;
+      flex-direction: column;
+      background: #1A162A;
+      border-left: 1px solid rgba(255, 255, 255, 0.1);
+      overflow: hidden;
+    }
+
+    .gemini-chat-box {
+      flex: 2; /* Takes 50% height of right panel */
+      display: flex;
+      flex-direction: column;
+      padding: 15px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      overflow: hidden;
+    }
+
+    .gemini-chat-box h3 {
+      font-size: 18px;
+      margin-bottom: 10px;
+      color: #8B5CF6;
+    }
+
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding-right: 10px; /* For scrollbar space */
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+      display: flex;
+      flex-direction: column; /* Ensure messages stack vertically */
+    }
+    .chat-messages::-webkit-scrollbar {
+      display: none;
+    }
+
+    .chat-message {
+      margin-bottom: 10px;
+      padding: 8px 12px;
+      border-radius: 10px;
+      max-width: 80%;
+      word-wrap: break-word; /* Ensure long words break */
+    }
+
+    .chat-message.user {
+      background: rgba(138, 43, 226, 0.3);
+      align-self: flex-end;
+      margin-left: auto;
+    }
+
+    .chat-message.gemini {
+      background: rgba(255, 255, 255, 0.1);
+      align-self: flex-start;
+      margin-right: auto;
+    }
+    .chat-message.gemini p {
+        margin: 0;
+    }
+
+    .chat-input-container {
+      display: flex;
+      margin-top: 10px;
+    }
+
+    .chat-input-container input {
+      flex: 1;
+      padding: 10px 15px;
+      border-radius: 20px;
+      border: none;
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      font-size: 14px;
+    }
+
+    .chat-input-container button {
+      background: #8B5CF6;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 20px;
+      margin-left: 10px;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .chat-input-container button:hover {
+      background: #7a4be0;
+    }
+
+    .music-player-section {
+      flex: 1; /* Takes 25% height of right panel */
+      display: flex;
+      flex-direction: column;
+      padding: 15px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      overflow: hidden;
+    }
+
+    .music-player-section h3 {
+      font-size: 18px;
+      margin-bottom: 10px;
+      color: #FFB26B;
+    }
+
+    .music-controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      margin-top: 10px;
+    }
+
+    .music-controls button {
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .music-controls button:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .music-player-section input[type="range"] {
+        width: 80%;
+        margin: 10px auto;
+        -webkit-appearance: none;
+        height: 8px;
+        border-radius: 5px;
+        background: rgba(255, 255, 255, 0.2);
+        outline: none;
+        transition: opacity .2s;
+    }
+
+    .music-player-section input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #FF7B54;
+        cursor: pointer;
+        box-shadow: 0 0 5px rgba(255, 123, 84, 0.5);
+    }
+
+    .pomodoro-section {
+      flex: 1; /* Takes 25% height of right panel */
+      display: flex;
+      flex-direction: column;
+      padding: 15px;
+      overflow: hidden;
+    }
+
+    .pomodoro-section h3 {
+      font-size: 18px;
+      margin-bottom: 10px;
+      color: #6366F1;
+    }
+
+    .pomodoro-timer {
+      font-size: 48px;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    .pomodoro-controls {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .pomodoro-controls button {
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      padding: 8px 15px;
+      border-radius: 15px;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .pomodoro-controls button:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .pomodoro-time-select {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap; /* Allow buttons to wrap */
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .pomodoro-time-select button {
+      background: rgba(138, 43, 226, 0.2);
+      border: 1px solid rgba(138, 43, 226, 0.5);
+      padding: 8px 12px;
+      border-radius: 10px;
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .pomodoro-time-select button.active,
+    .pomodoro-time-select button:hover {
+      background: rgba(138, 43, 226, 0.5);
+      box-shadow: 0 0 10px rgba(138, 43, 226, 0.5);
+    }
+
+    @media (max-width: 768px) {
+      .video-call-main-content {
+        flex-direction: column;
+      }
+      .video-feeds-section,
+      .right-panel {
+        flex: none;
+        width: 100%;
+        height: auto;
+      }
+      .right-panel {
+        border-left: none;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .gemini-chat-box, .music-player-section, .pomodoro-section {
+        flex: none; /* Allow content to dictate height */
+        height: auto;
+        min-height: 200px; /* Ensure some visibility */
+      }
+    }
   </style>
 </head>
 <body>
@@ -926,7 +1513,7 @@
         <i class="fas fa-home"></i>
         <span>Home</span>
       </a>
-      <a href="#" class="nav-item" id="nav-viberoom">
+      <a href="#" class="nav-item" id="nav-viberoom-main-nav">
         <i class="fas fa-music"></i>
         <span>VibeRoom</span>
       </a>
@@ -940,6 +1527,165 @@
       </a>
     </nav>
   </div>
+
+  <div class="viberoom-section hidden" id="viberoom-section">
+    <header>
+      <div class="logo">VibeRoom</div>
+      <div class="header-actions">
+        <div class="notification">
+          <i class="fas fa-bell"></i>
+        </div>
+        <button class="logout-btn" id="viberoom-logout-btn">Logout</button>
+      </div>
+    </header>
+
+    <main>
+      <div class="gradient-card">
+        <div class="gradient-card-icon">
+          <i class="fas fa-video"></i>
+        </div>
+        <div class="gradient-card-text">
+          <h3>Welcome to VibeRoom!</h3>
+          <p>Connect with others through video calls and shared vibes.</p>
+        </div>
+      </div>
+
+      <section class="viberoom-options">
+        <div class="viberoom-option-card" id="private-room-option">
+          <i class="fas fa-lock"></i>
+          <h3>Private Room</h3>
+          <p>Create a private room or join with ID/Password</p>
+        </div>
+        <div class="viberoom-option-card" id="selective-room-option">
+          <i class="fas fa-users-medical"></i>
+          <h3>Selective Room</h3>
+          <p>Choose who to vibe with (Coming Soon)</p>
+        </div>
+        <div class="viberoom-option-card" id="random-room-option">
+          <i class="fas fa-shuffle"></i>
+          <h3>Random Room</h3>
+          <p>Join a random room (Coming Soon)</p>
+        </div>
+        <div class="viberoom-option-card" id="join-room-option">
+          <i class="fas fa-door-open"></i>
+          <h3>Join Room</h3>
+          <p>Enter an existing room with ID and Password</p>
+        </div>
+      </section>
+    </main>
+
+    <nav>
+      <a href="#" class="nav-item" id="nav-viberoom-home">
+        <i class="fas fa-home"></i>
+        <span>Home</span>
+      </a>
+      <a href="#" class="nav-item active" id="nav-viberoom-main">
+        <i class="fas fa-music"></i>
+        <span>VibeRoom</span>
+      </a>
+      <a href="#" class="nav-item" id="nav-viberoom-buddies">
+        <i class="fas fa-user-group"></i>
+        <span>Buddies</span>
+      </a>
+      <a href="#" class="nav-item" id="nav-viberoom-profile">
+        <i class="fas fa-user"></i>
+        <span>Profile</span>
+      </a>
+    </nav>
+  </div>
+
+  <div id="privateRoomModal" class="private-room-modal">
+    <div class="private-room-modal-content">
+      <button class="close-button" id="closePrivateRoomModal">&times;</button>
+      <h3 id="privateRoomModalTitle">Create Private Room</h3>
+      <div class="form-group">
+        <label for="room-max-persons">Maximum Persons</label>
+        <select id="room-max-persons">
+          <option value="2">2 Persons</option>
+          <option value="3">3 Persons</option>
+          <option value="4">4 Persons</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="room-category">Category</label>
+        <select id="room-category">
+          <option value="study">Study</option>
+          <option value="music">Music (Coming Soon)</option>
+          <option value="gym">Gym (Coming Soon)</option>
+          <option value="random">Random (Coming Soon)</option>
+        </select>
+      </div>
+      <div class="form-group hidden" id="join-room-inputs">
+        <label for="join-room-id">Room ID</label>
+        <input type="text" id="join-room-id" placeholder="Enter Room ID">
+        <label for="join-room-password">Room Password</label>
+        <input type="password" id="join-room-password" placeholder="Enter Room Password">
+      </div>
+      <button id="privateRoomActionButton">Create Room</button>
+      <div class="room-details-display hidden" id="created-room-details">
+          <p>Room ID: <span id="display-room-id"></span> <button class="copy-button" data-target="display-room-id"><i class="fas fa-copy"></i></button></p>
+          <p>Password: <span id="display-room-password"></span> <button class="copy-button" data-target="display-room-password"><i class="fas fa-copy"></i></button></p>
+          <button id="start-private-room">Start Room</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="video-call-room hidden" id="video-call-room">
+    <header class="video-call-header">
+      <h2 id="current-room-name">VibeRoom Call</h2>
+      <div class="room-actions">
+        <button id="end-room-btn" class="hidden">End Room</button>
+        <button id="exit-room-btn">Exit Room</button>
+      </div>
+    </header>
+    <div class="video-call-main-content">
+      <div class="video-feeds-section" id="video-feeds-section">
+        <div class="video-feed-container" id="local-video-container">
+          <video id="local-video" autoplay muted></video>
+          <div class="video-feed-controls">
+            <button id="local-cam-toggle"><i class="fas fa-video"></i></button>
+            <button id="local-mic-toggle"><i class="fas fa-microphone"></i></button>
+          </div>
+        </div>
+        </div>
+      <div class="right-panel">
+        <div class="gemini-chat-box">
+          <h3>Gemini Chat</h3>
+          <div class="chat-messages" id="gemini-chat-messages">
+            </div>
+          <div class="chat-input-container">
+            <input type="text" id="gemini-chat-input" placeholder="Ask Gemini...">
+            <button id="send-gemini-chat"><i class="fas fa-paper-plane"></i></button>
+          </div>
+        </div>
+        <div class="music-player-section">
+          <h3>Music Player</h3>
+          <p id="current-song-title">No song playing</p>
+          <input type="range" id="music-volume-slider" min="0" max="1" step="0.01" value="0.5">
+          <div class="music-controls">
+            <button id="music-prev"><i class="fas fa-backward"></i></button>
+            <button id="music-play-pause"><i class="fas fa-play"></i></button>
+            <button id="music-next"><i class="fas fa-forward"></i></button>
+          </div>
+        </div>
+        <div class="pomodoro-section">
+          <h3>Pomodoro Timer</h3>
+          <div class="pomodoro-time-select">
+            <button data-time="25">25 min</button>
+            <button data-time="45">45 min</button>
+            <button data-time="60">1 hr</button>
+            <button data-time="90">1.5 hr</button>
+          </div>
+          <div class="pomodoro-timer" id="pomodoro-timer-display">25:00</div>
+          <div class="pomodoro-controls">
+            <button id="pomodoro-start-pause"><i class="fas fa-play"></i></button>
+            <button id="pomodoro-reset"><i class="fas fa-redo"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 
   <div id="customAlertModal" class="custom-modal">
     <div class="custom-modal-content">
@@ -966,6 +1712,7 @@
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+  <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js';
     import {
@@ -978,11 +1725,14 @@
       onAuthStateChanged,
       signOut
     } from 'https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js';
-    import { getFirestore, doc, setDoc, getDoc, updateDoc, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js';
-    import { getDatabase, ref, set, onDisconnect, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.13.2/firebase-database.js'; // New import for RTDB
+    import { getFirestore, doc, setDoc, getDoc, updateDoc, onSnapshot, collection, query, where, getDocs, deleteDoc } from 'https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js';
+    import { getDatabase, ref, set, onDisconnect, serverTimestamp, remove, onValue } from 'https://www.gstatic.com/firebasejs/10.13.2/firebase-database.js';
+    import { signInAnonymously, signInWithCustomToken } from 'https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js';
+
 
     // Firebase configuration
-    const firebaseConfig = {
+    // Use the global __firebase_config variable if available, otherwise use a default
+    const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
       apiKey: "AIzaSyC1Si1eckeNa-aF2RtQzIDckDhbvZlI66A",
       authDomain: "viberoom-3af1f.firebaseapp.com",
       projectId: "viberoom-3af1f",
@@ -995,8 +1745,24 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
-    const rtdb = getDatabase(app); // Initialize Realtime Database
+    const rtdb = getDatabase(app);
     const provider = new GoogleAuthProvider();
+
+    // Get the app ID from the environment or use a default
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-viberoom-app';
+
+    // Function to get user profile document reference
+    function getUserProfileDocRef(uid) {
+        // Corrected path to ensure even number of segments for a document reference.
+        // It now points to a document named 'data' within the 'profile' sub-collection
+        // under the user's UID.
+        return doc(db, 'artifacts', appId, 'users', uid, 'profile', 'data');
+    }
+
+    // Function to get room document reference
+    function getRoomDocRef(roomId) {
+        return doc(db, 'artifacts', appId, 'public', 'data', 'rooms', roomId);
+    }
 
     // Get elements for login/signup
     const authContainer = document.getElementById('auth-container');
@@ -1032,18 +1798,105 @@
     const logoutButton = document.getElementById('logout-btn');
     const profileImg = document.getElementById('profile-img');
     const profileImageUpload = document.getElementById('profile-image-upload');
+    const navVibeRoomMainNav = document.getElementById('nav-viberoom-main-nav');
 
     // Custom Alert Modal elements
     const customAlertModal = document.getElementById('customAlertModal');
     const modalMessage = document.getElementById('modalMessage');
     const modalCloseButton = document.getElementById('modalCloseButton');
 
-    // New elements for cropping modal
+    // Cropping Modal elements
     const cropModal = document.getElementById('cropModal');
     const imageToCrop = document.getElementById('imageToCrop');
     const cropAndUploadButton = document.getElementById('cropAndUploadButton');
     const cancelCropButton = document.getElementById('cancelCropButton');
-    let cropper; // Variable to hold the Cropper instance
+    let cropper;
+    let selectedProfileImageFile = null;
+
+    // VibeRoom Main elements
+    const viberoomSection = document.getElementById('viberoom-section');
+    const viberoomLogoutBtn = document.getElementById('viberoom-logout-btn');
+    const privateRoomOption = document.getElementById('private-room-option');
+    const selectiveRoomOption = document.getElementById('selective-room-option');
+    const randomRoomOption = document.getElementById('random-room-option');
+    const joinRoomOption = document.getElementById('join-room-option');
+    const navVibeRoomHome = document.getElementById('nav-viberoom-home');
+    const navVibeRoomMain = document.getElementById('nav-viberoom-main');
+    const navVibeRoomBuddies = document.getElementById('nav-viberoom-buddies');
+    const navVibeRoomProfile = document.getElementById('nav-viberoom-profile');
+
+    // Private Room Modal elements
+    const privateRoomModal = document.getElementById('privateRoomModal');
+    const closePrivateRoomModal = document.getElementById('closePrivateRoomModal');
+    const privateRoomModalTitle = document.getElementById('privateRoomModalTitle');
+    const roomMaxPersonsSelect = document.getElementById('room-max-persons');
+    const roomCategorySelect = document.getElementById('room-category');
+    const privateRoomActionButton = document.getElementById('privateRoomActionButton');
+    const joinRoomInputs = document.getElementById('join-room-inputs');
+    const joinRoomIdInput = document.getElementById('join-room-id');
+    const joinRoomPasswordInput = document.getElementById('join-room-password');
+    const createdRoomDetails = document.getElementById('created-room-details');
+    const displayRoomId = document.getElementById('display-room-id');
+    const displayRoomPassword = document.getElementById('display-room-password');
+    const startPrivateRoomButton = document.getElementById('start-private-room');
+    const copyButtons = document.querySelectorAll('.copy-button');
+
+    // Video Call Room elements
+    const videoCallRoom = document.getElementById('video-call-room');
+    const currentRoomName = document.getElementById('current-room-name');
+    const endRoomBtn = document.getElementById('end-room-btn');
+    const exitRoomBtn = document.getElementById('exit-room-btn');
+    const videoFeedsSection = document.getElementById('video-feeds-section');
+    const localVideo = document.getElementById('local-video');
+    const localCamToggle = document.getElementById('local-cam-toggle');
+    const localMicToggle = document.getElementById('local-mic-toggle');
+    const localVideoContainer = document.getElementById('local-video-container');
+
+
+    // Gemini Chat elements
+    const geminiChatMessages = document.getElementById('gemini-chat-messages');
+    const geminiChatInput = document.getElementById('gemini-chat-input');
+    const sendGeminiChatButton = document.getElementById('send-gemini-chat');
+    let chatHistory = []; // For Gemini API
+
+    // Music Player elements
+    const musicVolumeSlider = document.getElementById('music-volume-slider');
+    const musicPlayPauseButton = document.getElementById('music-play-pause');
+    const musicPrevButton = document.getElementById('music-prev');
+    const musicNextButton = document.getElementById('music-next');
+    const currentSongTitle = document.getElementById('current-song-title');
+    let currentAudio = new Audio();
+    let musicPlaying = false;
+    let currentSongIndex = 0;
+    const musicPlaylist = [
+      { title: "Chill Study Beats", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" },
+      { title: "Relaxing Piano", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" },
+      { title: "Ambient Background", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" }
+    ];
+
+    // Pomodoro Timer elements
+    const pomodoroTimerDisplay = document.getElementById('pomodoro-timer-display');
+    const pomodoroTimeSelectButtons = document.querySelectorAll('.pomodoro-time-select button');
+    const pomodoroStartPauseButton = document.getElementById('pomodoro-start-pause');
+    const pomodoroResetButton = document.getElementById('pomodoro-reset');
+    let pomodoroInterval;
+    let pomodoroTimeLeft = 25 * 60; // Default to 25 minutes in seconds
+    let pomodoroRunning = false;
+
+    // WebRTC/PeerJS variables
+    let peer = null;
+    let localStream = null;
+    const connectedPeers = {}; // Stores PeerJS connections: {peerId: {call: MediaConnection, stream: MediaStream, videoElement: HTMLVideoElement, controls: HTMLDivElement}}
+    let currentRoomId = null;
+    let isRoomCreator = false;
+    let roomParticipantsListener = null; // To store onSnapshot listener for room participants
+    let roomStatusListener = null; // To store onSnapshot listener for room status
+
+    // PeerJS Reconnection variables
+    const MAX_RECONNECT_ATTEMPTS = 5;
+    let currentReconnectAttempt = 0;
+    let reconnectTimeoutId = null;
+
 
     // ImgBB API Key
     const IMGBB_API_KEY = 'ed2da0de64a3e62a7c622a3edbae9419';
@@ -1107,16 +1960,20 @@
     /**
      * Displays a custom alert modal with a given message.
      * @param {string} message - The message to display in the modal.
+     * @returns {Promise<void>} A promise that resolves when the user closes the alert.
      */
     function showCustomAlert(message) {
-      modalMessage.textContent = message;
-      customAlertModal.style.display = 'flex';
+      return new Promise((resolve) => {
+        modalMessage.textContent = message;
+        customAlertModal.style.display = 'flex';
+        const closeHandler = () => {
+          customAlertModal.style.display = 'none';
+          modalCloseButton.removeEventListener('click', closeHandler);
+          resolve();
+        };
+        modalCloseButton.addEventListener('click', closeHandler);
+      });
     }
-
-    // Close button for custom alert modal
-    modalCloseButton.addEventListener('click', () => {
-      customAlertModal.style.display = 'none';
-    });
 
     /**
      * Displays an error message below the form.
@@ -1261,7 +2118,9 @@
           const user = userCredential.user;
           await updateProfile(user, { displayName: username });
 
-          await setDoc(doc(db, 'users', user.uid), {
+          // Store user profile data in Firestore. The path is now:
+          // artifacts/{appId}/users/{uid}/profile/data
+          await setDoc(getUserProfileDocRef(user.uid), {
             username,
             name,
             email,
@@ -1316,7 +2175,7 @@
         const result = await signInWithPopup(auth, provider);
         const user = result.user;
 
-        const userDocRef = doc(db, 'users', user.uid);
+        const userDocRef = getUserProfileDocRef(user.uid); // Changed
         const userDoc = await getDoc(userDocRef);
         if (!userDoc.exists()) {
           const userData = {
@@ -1330,11 +2189,15 @@
             status: 'Offline', // Will be set to Online by setUserOnlineStatus on next auth state change
             profileImage: user.photoURL || '' // Use Google profile photo if available
           };
-          await setDoc(userDocRef, userData);
+          // Store user profile data in Firestore. The path is now:
+          // artifacts/{appId}/users/{uid}/profile/data
+          await setDoc(getUserProfileDocRef(user.uid), userData);
         } else {
           // If user exists, update their profile image if it's a Google photo and not already set
           if (user.photoURL && !userDoc.data().profileImage) {
-            await updateDoc(userDocRef, { profileImage: user.photoURL });
+            // Update user profile data in Firestore. The path is now:
+            // artifacts/{appId}/users/{uid}/profile/data
+            await updateDoc(getUserProfileDocRef(user.uid), { profileImage: user.photoURL });
           }
         }
 
@@ -1373,7 +2236,7 @@
       const rect = authContainer.getBoundingClientRect();
       const isMouseInsidePanel =
         clientX >= rect.left &&
-        clientX <= rect.right &&
+        clientX >= rect.right &&
         clientY >= rect.top &&
         clientY <= rect.bottom;
 
@@ -1424,9 +2287,6 @@
         return null;
       }
     }
-
-    // Variable to store the selected image file (will be the cropped one)
-    let selectedProfileImageFile = null;
 
     // Handle image file selection for preview and cropping
     profileImageUpload.addEventListener('change', (e) => {
@@ -1512,21 +2372,24 @@
      */
     async function setUserOnlineStatus(userId, isOnline) {
         const userStatusRTDBRef = ref(rtdb, 'presence/' + userId);
-        const userDocRef = doc(db, 'users', userId);
+        const userDocRef = getUserProfileDocRef(userId);
 
         if (isOnline) {
             // Set up onDisconnect to set status to offline when client disconnects
-            // This operation will only be written to Realtime DB if the client goes offline without explicitly disconnecting
             onDisconnect(userStatusRTDBRef).set(false).then(() => {
                 // If onDisconnect is set successfully, set user's current status to true
                 set(userStatusRTDBRef, true);
             }).catch(error => {
                 console.error("Error setting onDisconnect or initial RTDB presence:", error);
+                // Even if RTDB fails, try to update Firestore.
+                setDoc(userDocRef, { status: 'Online' }, { merge: true }).catch(e => {
+                    console.error("Fallback: Error updating Firestore status to online:", e);
+                });
             });
 
-            // Update Firestore for display purposes (only on connect)
+            // Update Firestore for display purposes (always try to set/update)
             try {
-                await updateDoc(userDocRef, { status: 'Online' });
+                await setDoc(userDocRef, { status: 'Online' }, { merge: true });
             } catch (e) {
                 console.error("Error updating Firestore status to online:", e);
             }
@@ -1535,7 +2398,7 @@
             onDisconnect(userStatusRTDBRef).cancel(); // Cancel any pending onDisconnect for this user
             set(userStatusRTDBRef, false); // Set offline immediately in RTDB
             try {
-                await updateDoc(userDocRef, { status: 'Offline' });
+                await setDoc(userDocRef, { status: 'Offline' }, { merge: true });
             } catch (e) {
                 console.error("Error updating Firestore status to offline:", e);
             }
@@ -1556,7 +2419,7 @@
         return;
       }
 
-      const userDocRef = doc(db, 'users', user.uid);
+      const userDocRef = getUserProfileDocRef(user.uid); // Changed
       try {
         const docSnap = await getDoc(userDocRef);
         if (docSnap.exists()) {
@@ -1586,6 +2449,8 @@
           profileSection.classList.add('visible');
         } else {
           // Default values if no profile document exists
+          // This block ensures that even if the document doesn't exist yet,
+          // the UI is populated with reasonable defaults or user's Google profile info.
           profileUsernameDisplay.textContent = user.displayName || '@' + user.email.split('@')[0];
           profileNameDisplay.textContent = user.displayName || 'User Name';
           profileEmailDisplay.textContent = user.email || 'No Email';
@@ -1689,7 +2554,9 @@
         }
 
         await updateProfile(user, { displayName: username, photoURL: profileImageUrl });
-        await updateDoc(doc(db, 'users', user.uid), {
+        // Update user profile data in Firestore. The path is now:
+        // artifacts/{appId}/users/{uid}/profile/data
+        await updateDoc(getUserProfileDocRef(user.uid), {
           username,
           name,
           dob,
@@ -1736,27 +2603,31 @@
     // Firebase Auth State Listener
     onAuthStateChanged(auth, async (user) => {
         if (user) {
-            // User is signed in.
             console.log("User signed in:", user.uid);
-            loadProfile(user); // Load user profile from Firestore
-
-            // Set user online status in Realtime Database and update Firestore
+            // Ensure profile data is loaded and status is set online.
+            // loadProfile will also set the initial status display.
+            await loadProfile(user);
             await setUserOnlineStatus(user.uid, true);
 
             // Listen for changes in the user's Firestore document to update the status display
-            const userDocRef = doc(db, 'users', user.uid);
+            const userDocRef = getUserProfileDocRef(user.uid);
             onSnapshot(userDocRef, (docSnap) => {
                 if (docSnap.exists()) {
                     const profile = docSnap.data();
                     profileStatusDisplay.textContent = profile.status || 'Offline';
-                    profileStatusDisplay.style.color = profile.status === 'Online' ? '#8BC34A' : '#FF7B54'; // Optional: style text
+                    profileStatusDisplay.style.color = profile.status === 'Online' ? '#8BC34A' : '#FF7B54';
+                } else {
+                    // If the document somehow gets deleted while user is signed in,
+                    // reset status display and log.
+                    profileStatusDisplay.textContent = 'Offline';
+                    profileStatusDisplay.style.color = '#FF7B54';
+                    console.warn("User profile document disappeared while signed in.");
                 }
             }, (error) => {
                 console.error("Error listening to Firestore status changes:", error);
             });
 
         } else {
-            // User is signed out.
             console.log("User signed out.");
             // Reset UI to login state
             document.body.classList.remove('profile-active');
@@ -1764,8 +2635,8 @@
             authContainer.classList.add('visible');
             profileSection.classList.remove('visible');
             profileSection.classList.add('hidden');
-            // No need to explicitly set status to offline here, as logout button does it,
-            // or onDisconnect handles unexpected closures.
+            // Clear any active Firestore listeners for the previous user's profile status
+            // (This is implicitly handled if onSnapshot is scoped to the user's UID and re-established on new login)
         }
     });
 
@@ -1788,6 +2659,817 @@
         showCustomAlert('Logout failed: ' + error.message);
       }
     });
+
+    /* --- VibeRoom Specific Functions and Event Listeners --- */
+
+    /**
+     * Generates a random alphanumeric string for room ID/password.
+     * @param {number} length - The desired length of the string.
+     * @returns {string} The generated random string.
+     */
+    function generateRandomId(length) {
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321';
+        let result = '';
+        for (let i = 0; i < length; i++) {
+            result += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        return result;
+    }
+
+    /**
+     * Navigates to the VibeRoom main section.
+     */
+    function showVibeRoomMain() {
+        if (!auth.currentUser) {
+            showCustomAlert('Please log in to access VibeRoom.');
+            return;
+        }
+        profileSection.classList.add('hidden');
+        profileSection.classList.remove('visible');
+        viberoomSection.classList.remove('hidden');
+        viberoomSection.classList.add('visible');
+        document.body.classList.remove('profile-active'); // Ensure background is visible if coming from profile
+        document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+        navVibeRoomMain.classList.add('active'); // Set VibeRoom nav item active
+    }
+
+    // Event listener for VibeRoom main navigation item
+    navVibeRoomMainNav.addEventListener('click', (e) => {
+        e.preventDefault();
+        showVibeRoomMain();
+    });
+
+    // Event listeners for VibeRoom section navigation (home, buddies, profile)
+    navVibeRoomHome.addEventListener('click', (e) => {
+        e.preventDefault();
+        showCustomAlert('Home section coming soon!');
+    });
+    navVibeRoomBuddies.addEventListener('click', (e) => {
+        e.preventDefault();
+        showCustomAlert('Buddies section coming soon!');
+    });
+    navVibeRoomProfile.addEventListener('click', (e) => {
+        e.preventDefault();
+        profileSection.classList.remove('hidden');
+        profileSection.classList.add('visible');
+        viberoomSection.classList.add('hidden');
+        viberoomSection.classList.remove('visible');
+        document.body.classList.add('profile-active');
+        document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+        document.getElementById('nav-profile').classList.add('active'); // Set profile nav item active
+    });
+
+    // VibeRoom Logout Button
+    viberoomLogoutBtn.addEventListener('click', async () => {
+        try {
+            showLoadingScreen();
+            const user = auth.currentUser;
+            if (user) {
+                await setUserOnlineStatus(user.uid, false);
+            }
+            await signOut(auth);
+            setTimeout(() => {
+                hideLoadingScreen();
+                showCustomAlert('Logged out successfully!');
+                // Redirect to login page
+                authContainer.classList.remove('hidden');
+                authContainer.classList.add('visible');
+                viberoomSection.classList.remove('visible');
+                viberoomSection.classList.add('hidden');
+                document.body.classList.remove('profile-active');
+            }, 1000);
+        } catch (error) {
+            hideLoadingScreen();
+            showCustomAlert('Logout failed: ' + error.message);
+        }
+    });
+
+
+    // --- Private Room Logic ---
+
+    privateRoomOption.addEventListener('click', () => {
+        privateRoomModalTitle.textContent = 'Create Private Room';
+        roomMaxPersonsSelect.value = '4'; // Default to 4 persons
+        roomCategorySelect.value = 'study'; // Default to study
+        joinRoomInputs.classList.add('hidden');
+        privateRoomActionButton.textContent = 'Create Room';
+        createdRoomDetails.classList.add('hidden'); // Hide details when creating
+        privateRoomModal.style.display = 'flex';
+    });
+
+    joinRoomOption.addEventListener('click', () => {
+        privateRoomModalTitle.textContent = 'Join Private Room';
+        joinRoomInputs.classList.remove('hidden');
+        roomMaxPersonsSelect.parentElement.classList.add('hidden'); // Hide max persons for joining
+        roomCategorySelect.parentElement.classList.add('hidden'); // Hide category for joining
+        privateRoomActionButton.textContent = 'Join Room';
+        createdRoomDetails.classList.add('hidden'); // Hide details when joining
+        privateRoomModal.style.display = 'flex';
+    });
+
+    closePrivateRoomModal.addEventListener('click', () => {
+        privateRoomModal.style.display = 'none';
+        // Reset modal state
+        joinRoomIdInput.value = '';
+        joinRoomPasswordInput.value = '';
+        roomMaxPersonsSelect.parentElement.classList.remove('hidden'); // Show max persons again
+        roomCategorySelect.parentElement.classList.remove('hidden'); // Show category again
+    });
+
+    // Handle "Coming Soon" categories
+    roomCategorySelect.addEventListener('change', () => {
+        if (roomCategorySelect.value !== 'study') {
+            showCustomAlert('This category is coming soon! Please select "Study".');
+            roomCategorySelect.value = 'study';
+        }
+    });
+
+    privateRoomActionButton.addEventListener('click', async () => {
+        const user = auth.currentUser;
+        if (!user) {
+            showCustomAlert('You must be logged in to create or join a room.');
+            return;
+        }
+
+        if (privateRoomActionButton.textContent === 'Create Room') {
+            const maxPersons = parseInt(roomMaxPersonsSelect.value);
+            const category = roomCategorySelect.value;
+            const roomId = generateRandomId(6);
+            const roomPassword = generateRandomId(8);
+
+            showLoadingScreen();
+            try {
+                // Store room data in Firestore. The path is now:
+                // artifacts/{appId}/public/data/rooms/{roomId}
+                await setDoc(getRoomDocRef(roomId), {
+                    creatorId: user.uid,
+                    maxParticipants: maxPersons,
+                    category: category,
+                    password: roomPassword,
+                    participants: [user.uid], // Creator is the first participant
+                    isActive: true,
+                    createdAt: serverTimestamp()
+                });
+                currentRoomId = roomId;
+                isRoomCreator = true;
+                displayRoomId.textContent = roomId;
+                displayRoomPassword.textContent = roomPassword;
+                createdRoomDetails.classList.remove('hidden');
+                privateRoomActionButton.classList.add('hidden'); // Hide create button
+                hideLoadingScreen();
+                showCustomAlert('Room created successfully! Share the ID and Password.');
+            } catch (error) {
+                hideLoadingScreen();
+                showCustomAlert('Failed to create room: ' + error.message);
+                console.error('Error creating room:', error);
+            }
+        } else { // Join Room
+            const roomId = joinRoomIdInput.value.trim();
+            const roomPassword = joinRoomPasswordInput.value.trim();
+
+            if (!roomId || !roomPassword) {
+                showCustomAlert('Please enter both Room ID and Password.');
+                return;
+            }
+
+            showLoadingScreen();
+            try {
+                const roomDocRef = getRoomDocRef(roomId); // Changed
+                const roomSnap = await getDoc(roomDocRef);
+
+                if (!roomSnap.exists()) {
+                    hideLoadingScreen();
+                    showCustomAlert('Room not found.');
+                    return;
+                }
+
+                const roomData = roomSnap.data();
+                if (roomData.password !== roomPassword) {
+                    hideLoadingScreen();
+                    showCustomAlert('Incorrect room password.');
+                    return;
+                    }
+                if (!roomData.isActive) {
+                    hideLoadingScreen();
+                    showCustomAlert('This room is no longer active.');
+                    return;
+                }
+                if (roomData.participants.length >= roomData.maxParticipants) {
+                    hideLoadingScreen();
+                    showCustomAlert('Room is full.');
+                    return;
+                }
+                if (roomData.participants.includes(user.uid)) {
+                    hideLoadingScreen();
+                    showCustomAlert('You are already in this room.');
+                    currentRoomId = roomId; // Set current room ID even if already in
+                    isRoomCreator = false;
+                    startVideoCall(roomData.maxParticipants); // Proceed to video call
+                    return;
+                }
+
+                // Add user to participants
+                const updatedParticipants = [...roomData.participants, user.uid];
+                await updateDoc(roomDocRef, { participants: updatedParticipants });
+
+                currentRoomId = roomId;
+                isRoomCreator = false;
+                hideLoadingScreen();
+                showCustomAlert('Successfully joined room!');
+                startVideoCall(roomData.maxParticipants); // Proceed to video call
+
+            } catch (error) {
+                hideLoadingScreen();
+                showCustomAlert('Failed to join room: ' + error.message);
+                console.error('Error joining room:', error);
+            }
+        }
+    });
+
+    // Copy Room ID/Password
+    copyButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
+            const targetId = e.currentTarget.dataset.target;
+            const textToCopy = document.getElementById(targetId).textContent;
+            // Use document.execCommand('copy') for clipboard operations in iframes
+            const tempInput = document.createElement('textarea');
+            tempInput.value = textToCopy;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            try {
+                document.execCommand('copy');
+                showCustomAlert('Copied to clipboard!');
+            } catch (err) {
+                console.error('Failed to copy: ', err);
+                showCustomAlert('Failed to copy to clipboard.');
+            } finally {
+                document.body.removeChild(tempInput);
+            }
+        });
+    });
+
+    startPrivateRoomButton.addEventListener('click', async () => {
+        if (currentRoomId) {
+            privateRoomModal.style.display = 'none';
+            const roomDoc = await getDoc(getRoomDocRef(currentRoomId)); // Changed
+            if (roomDoc.exists()) {
+                startVideoCall(roomDoc.data().maxParticipants);
+            } else {
+                showCustomAlert('Room not found or no longer exists.');
+                currentRoomId = null;
+                isRoomCreator = false;
+            }
+        }
+    });
+
+    // --- Video Call Room Logic ---
+
+    /**
+     * Initializes PeerJS and gets local media stream.
+     * @param {number} maxParticipants - Maximum number of participants in the room.
+     */
+    async function startVideoCall(maxParticipants) {
+        showLoadingScreen();
+        viberoomSection.classList.add('hidden');
+        viberoomSection.classList.remove('visible');
+        videoCallRoom.classList.remove('hidden');
+        videoCallRoom.classList.add('visible');
+        document.body.classList.add('profile-active'); // Keep background off for video room
+
+        currentRoomName.textContent = `Room: ${currentRoomId}`;
+        if (isRoomCreator) {
+            endRoomBtn.classList.remove('hidden');
+        } else {
+            endRoomBtn.classList.add('hidden');
+        }
+
+        // Clear any pending reconnection attempts
+        if (reconnectTimeoutId) {
+            clearTimeout(reconnectTimeoutId);
+            reconnectTimeoutId = null;
+        }
+
+        try {
+            // Request camera and microphone permissions if not already granted
+            if (!localStream) {
+                localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+                localVideo.srcObject = localStream;
+                localVideo.muted = true; // Mute local preview
+            }
+
+            // Destroy existing peer instance if any before creating a new one
+            if (peer) {
+                console.log("Destroying existing PeerJS instance...");
+                peer.destroy();
+                peer = null;
+            }
+            
+            peer = new Peer(auth.currentUser.uid, {
+                host: '0.peerjs.com', // Changed to a more stable PeerServer cloud instance
+                secure: true, // Use HTTPS
+                port: 443,
+                debug: 3 // Add debug level for more verbose logging
+            });
+
+            peer.on('open', async (id) => {
+                console.log('My Peer ID:', id);
+                hideLoadingScreen();
+                currentReconnectAttempt = 0; // Reset reconnect attempts on successful connection
+
+                // If joining an existing room, call existing participants
+                if (!isRoomCreator) {
+                    const roomDocRef = getRoomDocRef(currentRoomId);
+                    const roomSnap = await getDoc(roomDocRef);
+                    if (roomSnap.exists()) {
+                        const participants = roomSnap.data().participants || [];
+                        for (const participantId of participants) {
+                            if (participantId !== auth.currentUser.uid) {
+                                console.log(`Calling ${participantId}`);
+                                const call = peer.call(participantId, localStream);
+                                setupCallListeners(call, participantId);
+                            }
+                        }
+                    }
+                }
+
+                // Listen for incoming calls
+                peer.on('call', (call) => {
+                    console.log('Incoming call from:', call.peer);
+                    call.answer(localStream); // Answer the call with our stream
+                    setupCallListeners(call, call.peer);
+                });
+            });
+
+            // Handle PeerJS connection close/disconnection
+            peer.on('disconnected', () => {
+                console.warn('PeerJS disconnected. Attempting to reconnect...');
+                if (currentReconnectAttempt < MAX_RECONNECT_ATTEMPTS) {
+                    currentReconnectAttempt++;
+                    const reconnectDelay = Math.pow(2, currentReconnectAttempt) * 1000; // Exponential backoff
+                    showCustomAlert(`Lost connection to video call. Attempting to reconnect in ${reconnectDelay / 1000} seconds... (Attempt ${currentReconnectAttempt}/${MAX_RECONNECT_ATTEMPTS})`);
+                    reconnectTimeoutId = setTimeout(() => {
+                        if (currentRoomId && auth.currentUser) { // Only re-init if still in a room and authenticated
+                            startVideoCall(maxParticipants); // Re-initialize PeerJS and call setup
+                        } else {
+                            exitRoom(); // If not in a room or logged out, just exit
+                        }
+                    }, reconnectDelay);
+                } else {
+                    showCustomAlert('Failed to reconnect to video call after multiple attempts. Exiting room.');
+                    exitRoom();
+                }
+            });
+
+            // Handle PeerJS errors
+            peer.on('error', (err) => {
+                console.error('PeerJS error:', err);
+                if (currentReconnectAttempt < MAX_RECONNECT_ATTEMPTS) {
+                    currentReconnectAttempt++;
+                    const reconnectDelay = Math.pow(2, currentReconnectAttempt) * 1000; // Exponential backoff
+                    showCustomAlert(`PeerJS connection error: ${err.message}. Attempting to reconnect in ${reconnectDelay / 1000} seconds... (Attempt ${currentReconnectAttempt}/${MAX_RECONNECT_ATTEMPTS})`);
+                    reconnectTimeoutId = setTimeout(() => {
+                        if (currentRoomId && auth.currentUser) {
+                            startVideoCall(maxParticipants);
+                        } else {
+                            exitRoom();
+                        }
+                    }, reconnectDelay);
+                } else {
+                    showCustomAlert('Persistent PeerJS errors. Exiting room.');
+                    exitRoom();
+                }
+            });
+
+        } catch (error) {
+            hideLoadingScreen();
+            console.error('Error getting user media or PeerJS setup:', error);
+            showCustomAlert('Failed to get camera/mic access or start video call: ' + error.message).then(() => {
+                exitRoom();
+            });
+        }
+    }
+
+    /**
+     * Sets up listeners for a PeerJS call object.
+     * @param {MediaConnection} call - The PeerJS MediaConnection object.
+     * @param {string} peerId - The ID of the remote peer.
+     */
+    function setupCallListeners(call, peerId) {
+        call.on('stream', (remoteStream) => {
+            console.log('Received remote stream from:', peerId);
+            // Check if a video element for this peer already exists to prevent duplicates
+            if (!connectedPeers[peerId] && !document.querySelector(`.video-feed-container[data-peer-id="${peerId}"]`)) {
+                const videoContainer = document.createElement('div');
+                videoContainer.classList.add('video-feed-container');
+                videoContainer.dataset.peerId = peerId; // Store peerId for easy lookup
+
+                const remoteVideo = document.createElement('video');
+                remoteVideo.srcObject = remoteStream;
+                remoteVideo.autoplay = true;
+                remoteVideo.playsinline = true; // Important for iOS
+
+                const controlsDiv = document.createElement('div');
+                controlsDiv.classList.add('video-feed-controls');
+
+                const camToggleBtn = document.createElement('button');
+                camToggleBtn.innerHTML = '<i class="fas fa-video"></i>';
+                camToggleBtn.classList.add('active'); // Assume active initially
+                camToggleBtn.addEventListener('click', () => {
+                    // Toggle remote video display (local control)
+                    remoteVideo.style.display = remoteVideo.style.display === 'none' ? 'block' : 'none';
+                    camToggleBtn.classList.toggle('active');
+                    camToggleBtn.classList.toggle('inactive');
+                    camToggleBtn.querySelector('i').classList.toggle('fa-video-slash');
+                    camToggleBtn.querySelector('i').classList.toggle('fa-video');
+                });
+
+                const micToggleBtn = document.createElement('button');
+                micToggleBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+                micToggleBtn.classList.add('active'); // Assume active initially
+                micToggleBtn.addEventListener('click', () => {
+                    // Toggle remote audio (local control)
+                    remoteVideo.muted = !remoteVideo.muted;
+                    micToggleBtn.classList.toggle('active');
+                    micToggleBtn.classList.toggle('inactive');
+                    micToggleBtn.querySelector('i').classList.toggle('fa-microphone-slash');
+                    micToggleBtn.querySelector('i').classList.toggle('fa-microphone');
+                });
+
+                controlsDiv.appendChild(camToggleBtn);
+                controlsDiv.appendChild(micToggleBtn);
+                videoContainer.appendChild(remoteVideo);
+                videoContainer.appendChild(controlsDiv);
+                videoFeedsSection.appendChild(videoContainer);
+
+                connectedPeers[peerId] = {
+                    call: call,
+                    stream: remoteStream,
+                    videoElement: remoteVideo,
+                    controls: controlsDiv
+                };
+            } else {
+                console.log(`Video feed for ${peerId} already exists or is being processed.`);
+            }
+        });
+
+        call.on('close', () => {
+            console.log('Call closed with:', peerId);
+            if (connectedPeers[peerId]) {
+                connectedPeers[peerId].videoElement.parentElement.remove();
+                delete connectedPeers[peerId];
+            }
+        });
+
+        call.on('error', (err) => {
+            console.error('Call error with', peerId, ':', err);
+            showCustomAlert(`Call error with ${peerId}: ${err.message}`);
+            if (connectedPeers[peerId]) {
+                connectedPeers[peerId].videoElement.parentElement.remove();
+                delete connectedPeers[peerId];
+            }
+        });
+    }
+
+    // Local camera toggle
+    localCamToggle.addEventListener('click', () => {
+        if (localStream) {
+            const videoTrack = localStream.getVideoTracks()[0];
+            if (videoTrack) {
+                videoTrack.enabled = !videoTrack.enabled;
+                localCamToggle.classList.toggle('active', videoTrack.enabled);
+                localCamToggle.classList.toggle('inactive', !videoTrack.enabled);
+                localCamToggle.querySelector('i').classList.toggle('fa-video-slash', !videoTrack.enabled);
+                localCamToggle.querySelector('i').classList.toggle('fa-video', videoTrack.enabled);
+            }
+        }
+    });
+
+    // Local microphone toggle
+    localMicToggle.addEventListener('click', () => {
+        if (localStream) {
+            const audioTrack = localStream.getAudioTracks()[0];
+            if (audioTrack) {
+                audioTrack.enabled = !audioTrack.enabled;
+                localMicToggle.classList.toggle('active', audioTrack.enabled);
+                localMicToggle.classList.toggle('inactive', !audioTrack.enabled);
+                localMicToggle.querySelector('i').classList.toggle('fa-microphone-slash', !audioTrack.enabled);
+                localMicToggle.querySelector('i').classList.toggle('fa-microphone', audioTrack.enabled);
+            }
+        }
+    });
+
+    // Exit Room Function
+    async function exitRoom() {
+        showLoadingScreen();
+
+        // Clear any pending reconnection attempts
+        if (reconnectTimeoutId) {
+            clearTimeout(reconnectTimeoutId);
+            reconnectTimeoutId = null;
+        }
+        currentReconnectAttempt = 0; // Reset attempts
+
+        // Stop all local media tracks
+        if (localStream) {
+            localStream.getTracks().forEach(track => track.stop());
+            localVideo.srcObject = null;
+            localStream = null;
+        }
+
+        // Close all PeerJS connections
+        for (const peerId in connectedPeers) {
+            if (connectedPeers[peerId].call) {
+                connectedPeers[peerId].call.close();
+            }
+            connectedPeers[peerId].videoElement.parentElement.remove(); // Remove video element
+            delete connectedPeers[peerId];
+        }
+        if (peer) {
+            peer.destroy();
+            peer = null;
+        }
+
+        // Remove user from room participants in Firestore
+        if (currentRoomId && auth.currentUser) {
+            const roomDocRef = getRoomDocRef(currentRoomId); // Changed
+            const roomSnap = await getDoc(roomDocRef);
+            if (roomSnap.exists()) {
+                const roomData = roomSnap.data();
+                const updatedParticipants = roomData.participants.filter(uid => uid !== auth.currentUser.uid);
+                await updateDoc(roomDocRef, { participants: updatedParticipants });
+            }
+        }
+
+        // Detach Firestore listeners
+        if (roomParticipantsListener) {
+            roomParticipantsListener(); // Unsubscribe
+            roomParticipantsListener = null;
+        }
+        if (roomStatusListener) {
+            roomStatusListener(); // Unsubscribe
+            roomStatusListener = null;
+        }
+
+        currentRoomId = null;
+        isRoomCreator = false;
+        hideLoadingScreen();
+        videoCallRoom.classList.add('hidden');
+        videoCallRoom.classList.remove('visible');
+        showVibeRoomMain(); // Redirect to VibeRoom main page
+        showCustomAlert('You have exited the room.');
+    }
+
+    // End Room Function (Creator only)
+    endRoomBtn.addEventListener('click', async () => {
+        showCustomAlert('Are you sure you want to end the room for everyone?').then(async () => {
+            if (currentRoomId && isRoomCreator) {
+                showLoadingScreen();
+                try {
+                    // Set room to inactive and then delete
+                    const roomDocRef = getRoomDocRef(currentRoomId); // Changed
+                    await updateDoc(roomDocRef, { isActive: false }); // Signal other users
+                    await deleteDoc(roomDocRef); // Delete the room
+                    showCustomAlert('Room ended for all participants.').then(() => {
+                        exitRoom(); // Clean up local state and redirect
+                    });
+                } catch (error) {
+                    hideLoadingScreen();
+                    showCustomAlert('Failed to end room: ' + error.message);
+                    console.error('Error ending room:', error);
+                }
+            }
+        });
+    });
+
+    // Exit Room Button Listener
+    exitRoomBtn.addEventListener('click', () => {
+        showCustomAlert('Are you sure you want to exit the room?').then(() => {
+            exitRoom();
+        });
+    });
+
+
+    // --- Gemini Chatbox Logic ---
+    sendGeminiChatButton.addEventListener('click', async () => {
+      const userMessage = geminiChatInput.value.trim();
+      if (userMessage) {
+        // Display user message
+        const userChatBubble = document.createElement('div');
+        userChatBubble.classList.add('chat-message', 'user');
+        userChatBubble.textContent = userMessage;
+        geminiChatMessages.appendChild(userChatBubble);
+        geminiChatMessages.scrollTop = geminiChatMessages.scrollHeight; // Scroll to bottom
+        geminiChatInput.value = '';
+
+        // Add to chat history
+        chatHistory.push({ role: "user", parts: [{ text: userMessage }] });
+
+        // Show loading indicator
+        const loadingBubble = document.createElement('div');
+        loadingBubble.classList.add('chat-message', 'gemini');
+        loadingBubble.innerHTML = '<p>Gemini is typing...</p>';
+        geminiChatMessages.appendChild(loadingBubble);
+        geminiChatMessages.scrollTop = geminiChatMessages.scrollHeight;
+
+        try {
+          const payload = { contents: chatHistory };
+          const apiKey = "AIzaSyDf6RP1GvUleF7TZsu1Jz6xy48GySXdoaQ"; // Canvas will provide this at runtime
+          const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+          const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+
+          const result = await response.json();
+
+          // Remove loading indicator
+          geminiChatMessages.removeChild(loadingBubble);
+
+          if (result.candidates && result.candidates.length > 0 &&
+              result.candidates[0].content && result.candidates[0].content.parts &&
+              result.candidates[0].content.parts.length > 0) {
+            const geminiResponseText = result.candidates[0].content.parts[0].text;
+
+            // Display Gemini response
+            const geminiChatBubble = document.createElement('div');
+            geminiChatBubble.classList.add('chat-message', 'gemini');
+            geminiChatBubble.innerHTML = `<p>${geminiResponseText}</p>`;
+            geminiChatMessages.appendChild(geminiChatBubble);
+            geminiChatMessages.scrollTop = geminiChatMessages.scrollHeight;
+
+            // Add Gemini response to chat history
+            chatHistory.push({ role: "model", parts: [{ text: geminiResponseText }] });
+          } else {
+            const errorText = "Sorry, I couldn't get a response from Gemini.";
+            const errorBubble = document.createElement('div');
+            errorBubble.classList.add('chat-message', 'gemini');
+            errorBubble.innerHTML = `<p>${errorText}</p>`;
+            geminiChatMessages.appendChild(errorBubble);
+            geminiChatMessages.scrollTop = geminiChatMessages.scrollHeight;
+            console.error('Unexpected Gemini API response structure:', result);
+          }
+        } catch (error) {
+          // Remove loading indicator on error
+          if (geminiChatMessages.contains(loadingBubble)) {
+            geminiChatMessages.removeChild(loadingBubble);
+          }
+          const errorText = `Error communicating with Gemini: ${error.message}`;
+          const errorBubble = document.createElement('div');
+          errorBubble.classList.add('chat-message', 'gemini');
+          errorBubble.innerHTML = `<p>${errorText}</p>`;
+          geminiChatMessages.appendChild(errorBubble);
+          geminiChatMessages.scrollTop = geminiChatMessages.scrollHeight;
+          console.error('Gemini API fetch error:', error);
+        }
+      }
+    });
+
+    geminiChatInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        sendGeminiChatButton.click();
+      }
+    });
+
+
+    // --- Music Player Logic ---
+
+    /**
+     * Loads and plays the current song from the playlist.
+     */
+    function loadAndPlaySong() {
+        currentAudio.src = musicPlaylist[currentSongIndex].src;
+        currentSongTitle.textContent = musicPlaylist[currentSongIndex].title;
+        currentAudio.volume = musicVolumeSlider.value;
+        currentAudio.play();
+        musicPlayPauseButton.innerHTML = '<i class="fas fa-pause"></i>';
+        musicPlaying = true;
+        videoCallRoom.classList.add('music-active'); // Start glowing border
+    }
+
+    /**
+     * Pauses the current song.
+     */
+    function pauseSong() {
+        currentAudio.pause();
+        musicPlayPauseButton.innerHTML = '<i class="fas fa-play"></i>';
+        musicPlaying = false;
+        videoCallRoom.classList.remove('music-active'); // Stop glowing border
+    }
+
+    // Play/Pause Toggle
+    musicPlayPauseButton.addEventListener('click', () => {
+        if (musicPlaying) {
+            pauseSong();
+        } else {
+            loadAndPlaySong();
+        }
+    });
+
+    // Next Song
+    musicNextButton.addEventListener('click', () => {
+        currentSongIndex = (currentSongIndex + 1) % musicPlaylist.length;
+        loadAndPlaySong();
+    });
+
+    // Previous Song
+    musicPrevButton.addEventListener('click', () => {
+        currentSongIndex = (currentSongIndex - 1 + musicPlaylist.length) % musicPlaylist.length;
+        loadAndPlaySong();
+    });
+
+    // Volume Control
+    musicVolumeSlider.addEventListener('input', () => {
+        currentAudio.volume = musicVolumeSlider.value;
+    });
+
+    // When current song ends, play next
+    currentAudio.addEventListener('ended', () => {
+        musicNextButton.click();
+    });
+
+    // Initialize music player display
+    currentSongTitle.textContent = musicPlaylist[currentSongIndex].title;
+    currentAudio.volume = musicVolumeSlider.value;
+
+
+    // --- Pomodoro Timer Logic ---
+
+    /**
+     * Formats seconds into MM:SS string.
+     * @param {number} seconds - The total seconds.
+     * @returns {string} Formatted time string.
+     */
+    function formatTime(seconds) {
+        const minutes = Math.floor(seconds / 60);
+        const remainingSeconds = seconds % 60;
+        return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+    }
+
+    /**
+     * Updates the Pomodoro timer display.
+     */
+    function updatePomodoroDisplay() {
+        pomodoroTimerDisplay.textContent = formatTime(pomodoroTimeLeft);
+    }
+
+    /**
+     * Starts or pauses the Pomodoro timer.
+     */
+    function togglePomodoro() {
+        if (pomodoroRunning) {
+            clearInterval(pomodoroInterval);
+            pomodoroStartPauseButton.innerHTML = '<i class="fas fa-play"></i>';
+        } else {
+            pomodoroInterval = setInterval(() => {
+                if (pomodoroTimeLeft > 0) {
+                    pomodoroTimeLeft--;
+                    updatePomodoroDisplay();
+                } else {
+                    clearInterval(pomodoroInterval);
+                    pomodoroRunning = false;
+                    pomodoroStartPauseButton.innerHTML = '<i class="fas fa-play"></i>';
+                    showCustomAlert('Pomodoro session finished!');
+                }
+            }, 1000);
+            pomodoroStartPauseButton.innerHTML = '<i class="fas fa-pause"></i>';
+        }
+        pomodoroRunning = !pomodoroRunning;
+    }
+
+    // Set Pomodoro time interval
+    pomodoroTimeSelectButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            if (pomodoroRunning) {
+                showCustomAlert('Please reset the timer before changing the interval.');
+                return;
+            }
+            pomodoroTimeSelectButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+            pomodoroTimeLeft = parseInt(button.dataset.time) * 60;
+            updatePomodoroDisplay();
+        });
+    });
+
+    // Start/Pause Pomodoro
+    pomodoroStartPauseButton.addEventListener('click', togglePomodoro);
+
+    // Reset Pomodoro
+    pomodoroResetButton.addEventListener('click', () => {
+        clearInterval(pomodoroInterval);
+        pomodoroRunning = false;
+        pomodoroTimeLeft = parseInt(document.querySelector('.pomodoro-time-select button.active')?.dataset.time || '25') * 60;
+        updatePomodoroDisplay();
+        pomodoroStartPauseButton.innerHTML = '<i class="fas fa-play"></i>';
+    });
+
+    // Initial Pomodoro display update
+    updatePomodoroDisplay();
+
+    // Ensure initial active state for pomodoro buttons
+    document.querySelector('.pomodoro-time-select button[data-time="25"]').classList.add('active');
+
   </script>
 </body>
 </html>
