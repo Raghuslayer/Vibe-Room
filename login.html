@@ -32,7 +32,7 @@
       transition: background 0.5s ease, backdrop-filter 0.5s ease;
     }
 
-    /* Remove login background when profile is visible */
+    /* Remove login background when profile/viberoom is visible */
     body.profile-active {
       background: none;
       backdrop-filter: none;
@@ -73,8 +73,6 @@
         padding: 20px;
       }
     }
-
-    /* Removed .auth-container::-webkit-scrollbar-track and -thumb as scrollbar is hidden */
 
     .auth-header {
       text-align: center;
@@ -1070,11 +1068,12 @@
     .video-feeds-section {
       flex: 3; /* Takes 75% width */
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Dynamic columns */
+      /* Adjust grid to match image: 2 columns if enough space, otherwise 1 */
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 10px;
       padding: 10px;
       background: #221C3E;
-      overflow-y: auto;
+      overflow-y: auto; /* Enable scrolling for video feeds */
       -ms-overflow-style: none;
       scrollbar-width: none;
     }
@@ -1085,7 +1084,8 @@
     .video-feed-container {
       position: relative;
       width: 100%;
-      padding-bottom: 75%; /* 4:3 aspect ratio for video, adjust as needed */
+      /* Maintain aspect ratio, e.g., 4:3 */
+      padding-bottom: 75%; 
       background-color: #000;
       border-radius: 10px;
       overflow: hidden;
@@ -1144,7 +1144,12 @@
       flex-direction: column;
       background: #1A162A;
       border-left: 1px solid rgba(255, 255, 255, 0.1);
-      overflow: hidden;
+      overflow-y: auto; /* Enable scrolling for the right panel */
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .right-panel::-webkit-scrollbar {
+      display: none;
     }
 
     .gemini-chat-box {
@@ -1358,13 +1363,17 @@
       .video-call-main-content {
         flex-direction: column;
       }
-      .video-feeds-section,
+      .video-feeds-section {
+        grid-template-columns: 1fr; /* Single column on mobile */
+        flex: none;
+        width: 100%;
+        height: auto; /* Allow height to be determined by content */
+        max-height: 50vh; /* Limit height to prevent excessive scrolling */
+      }
       .right-panel {
         flex: none;
         width: 100%;
         height: auto;
-      }
-      .right-panel {
         border-left: none;
         border-top: 1px solid rgba(255, 255, 255, 0.1);
       }
@@ -1373,6 +1382,32 @@
         height: auto;
         min-height: 200px; /* Ensure some visibility */
       }
+    }
+
+    /* Loading dots for Gemini chat */
+    .loading-dots {
+      display: inline-block;
+      width: auto; /* Adjust width as needed */
+      text-align: left;
+    }
+
+    .loading-dots span {
+      opacity: 0;
+      animation: blink 1.4s infinite;
+    }
+
+    .loading-dots span:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .loading-dots span:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    @keyframes blink {
+      0% { opacity: 0; }
+      50% { opacity: 1; }
+      100% { opacity: 0; }
     }
   </style>
 </head>
@@ -1535,7 +1570,7 @@
         <div class="notification">
           <i class="fas fa-bell"></i>
         </div>
-        <button class="logout-btn" id="viberoom-logout-btn">Logout</button>
+        <!-- Removed logout button from VibeRoom header as requested -->
       </div>
     </header>
 
@@ -1647,7 +1682,8 @@
             <button id="local-mic-toggle"><i class="fas fa-microphone"></i></button>
           </div>
         </div>
-        </div>
+        <!-- Remote video feeds will be added here dynamically -->
+      </div>
       <div class="right-panel">
         <div class="gemini-chat-box">
           <h3>Gemini Chat</h3>
@@ -1815,7 +1851,6 @@
 
     // VibeRoom Main elements
     const viberoomSection = document.getElementById('viberoom-section');
-    const viberoomLogoutBtn = document.getElementById('viberoom-logout-btn');
     const privateRoomOption = document.getElementById('private-room-option');
     const selectiveRoomOption = document.getElementById('selective-room-option');
     const randomRoomOption = document.getElementById('random-room-option');
@@ -1891,6 +1926,7 @@
     let isRoomCreator = false;
     let roomParticipantsListener = null; // To store onSnapshot listener for room participants
     let roomStatusListener = null; // To store onSnapshot listener for room status
+    let userInRoom = false; // Flag to track if user is in a room
 
     // PeerJS Reconnection variables
     const MAX_RECONNECT_ATTEMPTS = 5;
@@ -2691,6 +2727,11 @@
         document.body.classList.remove('profile-active'); // Ensure background is visible if coming from profile
         document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
         navVibeRoomMain.classList.add('active'); // Set VibeRoom nav item active
+        // Ensure VibeRoom nav items have icons
+        navVibeRoomHome.innerHTML = '<i class="fas fa-home"></i><span>Home</span>';
+        navVibeRoomMain.innerHTML = '<i class="fas fa-music"></i><span>VibeRoom</span>';
+        navVibeRoomBuddies.innerHTML = '<i class="fas fa-user-group"></i><span>Buddies</span>';
+        navVibeRoomProfile.innerHTML = '<i class="fas fa-user"></i><span>Profile</span>';
     }
 
     // Event listener for VibeRoom main navigation item
@@ -2719,35 +2760,13 @@
         document.getElementById('nav-profile').classList.add('active'); // Set profile nav item active
     });
 
-    // VibeRoom Logout Button
-    viberoomLogoutBtn.addEventListener('click', async () => {
-        try {
-            showLoadingScreen();
-            const user = auth.currentUser;
-            if (user) {
-                await setUserOnlineStatus(user.uid, false);
-            }
-            await signOut(auth);
-            setTimeout(() => {
-                hideLoadingScreen();
-                showCustomAlert('Logged out successfully!');
-                // Redirect to login page
-                authContainer.classList.remove('hidden');
-                authContainer.classList.add('visible');
-                viberoomSection.classList.remove('visible');
-                viberoomSection.classList.add('hidden');
-                document.body.classList.remove('profile-active');
-            }, 1000);
-        } catch (error) {
-            hideLoadingScreen();
-            showCustomAlert('Logout failed: ' + error.message);
-        }
-    });
-
-
     // --- Private Room Logic ---
 
     privateRoomOption.addEventListener('click', () => {
+        if (userInRoom) {
+            showCustomAlert('You are already in a room. Please exit the current room before creating or joining another.');
+            return;
+        }
         privateRoomModalTitle.textContent = 'Create Private Room';
         roomMaxPersonsSelect.value = '4'; // Default to 4 persons
         roomCategorySelect.value = 'study'; // Default to study
@@ -2758,6 +2777,10 @@
     });
 
     joinRoomOption.addEventListener('click', () => {
+        if (userInRoom) {
+            showCustomAlert('You are already in a room. Please exit the current room before creating or joining another.');
+            return;
+        }
         privateRoomModalTitle.textContent = 'Join Private Room';
         joinRoomInputs.classList.remove('hidden');
         roomMaxPersonsSelect.parentElement.classList.add('hidden'); // Hide max persons for joining
@@ -2812,6 +2835,7 @@
                 });
                 currentRoomId = roomId;
                 isRoomCreator = true;
+                userInRoom = true; // Set user in room flag
                 displayRoomId.textContent = roomId;
                 displayRoomPassword.textContent = roomPassword;
                 createdRoomDetails.classList.remove('hidden');
@@ -2864,6 +2888,7 @@
                     showCustomAlert('You are already in this room.');
                     currentRoomId = roomId; // Set current room ID even if already in
                     isRoomCreator = false;
+                    userInRoom = true; // Set user in room flag
                     startVideoCall(roomData.maxParticipants); // Proceed to video call
                     return;
                 }
@@ -2874,6 +2899,7 @@
 
                 currentRoomId = roomId;
                 isRoomCreator = false;
+                userInRoom = true; // Set user in room flag
                 hideLoadingScreen();
                 showCustomAlert('Successfully joined room!');
                 startVideoCall(roomData.maxParticipants); // Proceed to video call
@@ -2918,6 +2944,7 @@
                 showCustomAlert('Room not found or no longer exists.');
                 currentRoomId = null;
                 isRoomCreator = false;
+                userInRoom = false; // Reset user in room flag
             }
         }
     });
@@ -2998,6 +3025,49 @@
                     call.answer(localStream); // Answer the call with our stream
                     setupCallListeners(call, call.peer);
                 });
+
+                // Set up Firestore listener for room participants
+                if (currentRoomId) {
+                    roomParticipantsListener = onSnapshot(getRoomDocRef(currentRoomId), (docSnap) => {
+                        if (docSnap.exists()) {
+                            const roomData = docSnap.data();
+                            const currentParticipants = roomData.participants || [];
+                            const connectedPeerIds = Object.keys(connectedPeers);
+
+                            // Add new participants
+                            for (const participantId of currentParticipants) {
+                                if (participantId !== auth.currentUser.uid && !connectedPeerIds.includes(participantId)) {
+                                    console.log(`New participant detected: ${participantId}. Calling...`);
+                                    const call = peer.call(participantId, localStream);
+                                    setupCallListeners(call, participantId);
+                                }
+                            }
+
+                            // Remove disconnected participants
+                            for (const connectedPeerId of connectedPeerIds) {
+                                if (!currentParticipants.includes(connectedPeerId)) {
+                                    console.log(`Participant ${connectedPeerId} left. Closing call.`);
+                                    if (connectedPeers[connectedPeerId].call) {
+                                        connectedPeers[connectedPeerId].call.close();
+                                    }
+                                    if (connectedPeers[connectedPeerId].videoElement) {
+                                        connectedPeers[connectedPeerId].videoElement.parentElement.remove();
+                                    }
+                                    delete connectedPeers[connectedPeerId];
+                                }
+                            }
+                        } else {
+                            // Room no longer exists (e.g., creator ended it)
+                            console.log("Room no longer exists. Exiting call.");
+                            showCustomAlert("The room has been ended by the creator or no longer exists.").then(() => {
+                                exitRoom();
+                            });
+                        }
+                    }, (error) => {
+                        console.error("Error listening to room participants:", error);
+                    });
+                }
+
             });
 
             // Handle PeerJS connection close/disconnection
@@ -3181,13 +3251,19 @@
             if (connectedPeers[peerId].call) {
                 connectedPeers[peerId].call.close();
             }
-            connectedPeers[peerId].videoElement.parentElement.remove(); // Remove video element
+            if (connectedPeers[peerId].videoElement) {
+                connectedPeers[peerId].videoElement.parentElement.remove(); // Remove video element
+            }
             delete connectedPeers[peerId];
         }
         if (peer) {
             peer.destroy();
             peer = null;
         }
+
+        // Stop music playback when exiting room
+        pauseSong();
+        currentAudio.currentTime = 0; // Reset music to start
 
         // Remove user from room participants in Firestore
         if (currentRoomId && auth.currentUser) {
@@ -3212,6 +3288,7 @@
 
         currentRoomId = null;
         isRoomCreator = false;
+        userInRoom = false; // Reset user in room flag
         hideLoadingScreen();
         videoCallRoom.classList.add('hidden');
         videoCallRoom.classList.remove('visible');
@@ -3267,7 +3344,7 @@
         // Show loading indicator
         const loadingBubble = document.createElement('div');
         loadingBubble.classList.add('chat-message', 'gemini');
-        loadingBubble.innerHTML = '<p>Gemini is typing...</p>';
+        loadingBubble.innerHTML = `<p>Gemini is typing<span class="loading-dots"><span>.</span><span>.</span><span>.</span></span></p>`;
         geminiChatMessages.appendChild(loadingBubble);
         geminiChatMessages.scrollTop = geminiChatMessages.scrollHeight;
 
@@ -3285,7 +3362,9 @@
           const result = await response.json();
 
           // Remove loading indicator
-          geminiChatMessages.removeChild(loadingBubble);
+          if (geminiChatMessages.contains(loadingBubble)) {
+            geminiChatMessages.removeChild(loadingBubble);
+          }
 
           if (result.candidates && result.candidates.length > 0 &&
               result.candidates[0].content && result.candidates[0].content.parts &&
