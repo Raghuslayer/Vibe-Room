@@ -999,7 +999,7 @@
       flex-direction: column;
       width: 100vw;
       height: 100vh;
-      overflow: hidden; /* Changed: main overflow handled by body on mobile, grid handles desktop */
+      overflow: hidden;
       background: #13111C;
       position: relative;
       border: 5px solid transparent; /* For RGB glowing line */
@@ -1060,25 +1060,22 @@
 
     .video-call-main-content {
       flex: 1;
-      display: grid; /* Use grid for 2x2 layout on desktop */
-      grid-template-columns: 1fr 1fr; /* Two columns */
-      grid-template-rows: 3fr 1fr; /* Changed: Top row (video/chat) gets 3x space, bottom row (music/pomodoro) gets 1x */
-      gap: 10px; /* Gap between grid items */
-      padding: 10px; /* Padding around the grid */
-      overflow: hidden; /* Prevent overall scrolling, individual sections will scroll */
+      display: flex;
+      flex-direction: row;
+      overflow: hidden;
     }
 
     .video-feeds-section {
-      grid-area: 1 / 1 / 2 / 2; /* Top-left quadrant */
+      flex: 3; /* Takes 75% width */
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Dynamic columns for feeds */
+      /* Adjust grid to match image: 2 columns if enough space, otherwise 1 */
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 10px;
       padding: 10px;
       background: #221C3E;
       overflow-y: auto; /* Enable scrolling for video feeds */
       -ms-overflow-style: none;
       scrollbar-width: none;
-      border-radius: 10px;
     }
     .video-feeds-section::-webkit-scrollbar {
       display: none;
@@ -1087,7 +1084,8 @@
     .video-feed-container {
       position: relative;
       width: 100%;
-      padding-bottom: 75%; /* 4:3 aspect ratio for video, adjust as needed */
+      /* Maintain aspect ratio, e.g., 4:3 */
+      padding-bottom: 75%; 
       background-color: #000;
       border-radius: 10px;
       overflow: hidden;
@@ -1140,14 +1138,27 @@
     }
 
 
+    .right-panel {
+      flex: 1; /* Takes 25% width */
+      display: flex;
+      flex-direction: column;
+      background: #1A162A;
+      border-left: 1px solid rgba(255, 255, 255, 0.1);
+      overflow-y: auto; /* Enable scrolling for the right panel */
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .right-panel::-webkit-scrollbar {
+      display: none;
+    }
+
     .gemini-chat-box {
-      grid-area: 1 / 2 / 2 / 3; /* Top-right quadrant */
+      flex: 2; /* Takes 50% height of right panel */
       display: flex;
       flex-direction: column;
       padding: 15px;
-      background: #1A162A; /* Match right panel background */
-      border-radius: 10px;
-      overflow: hidden; /* Ensure chat messages scroll within */
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      overflow: hidden;
     }
 
     .gemini-chat-box h3 {
@@ -1223,12 +1234,11 @@
     }
 
     .music-player-section {
-      grid-area: 2 / 1 / 3 / 2; /* Bottom-left quadrant */
+      flex: 1; /* Takes 25% height of right panel */
       display: flex;
       flex-direction: column;
       padding: 15px;
-      background: #1A162A; /* Match right panel background */
-      border-radius: 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
       overflow: hidden;
     }
 
@@ -1285,12 +1295,10 @@
     }
 
     .pomodoro-section {
-      grid-area: 2 / 2 / 3 / 3; /* Bottom-right quadrant */
+      flex: 1; /* Takes 25% height of right panel */
       display: flex;
       flex-direction: column;
       padding: 15px;
-      background: #1A162A; /* Match right panel background */
-      border-radius: 10px;
       overflow: hidden;
     }
 
@@ -1351,33 +1359,28 @@
       box-shadow: 0 0 10px rgba(138, 43, 226, 0.5);
     }
 
-    /* Mobile responsiveness for video call room */
     @media (max-width: 768px) {
-      .video-call-room {
-        overflow-y: auto; /* Changed: Allow scrolling on mobile */
-      }
       .video-call-main-content {
-        display: flex; /* Revert to flex for stacking on mobile */
         flex-direction: column;
-        gap: 0; /* Remove gap for stacked layout */
-        padding: 0; /* Remove padding for full width */
       }
       .video-feeds-section {
+        grid-template-columns: 1fr; /* Single column on mobile */
+        flex: none;
+        width: 100%;
+        height: auto; /* Allow height to be determined by content */
+        max-height: 50vh; /* Limit height to prevent excessive scrolling */
+      }
+      .right-panel {
         flex: none;
         width: 100%;
         height: auto;
-        max-height: 50vh; /* Limit height to prevent excessive scrolling */
-        border-radius: 0; /* Remove border-radius on mobile for full width */
-        padding: 10px; /* Add back padding for content */
+        border-left: none;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
       }
       .gemini-chat-box, .music-player-section, .pomodoro-section {
         flex: none; /* Allow content to dictate height */
-        width: 100%;
         height: auto;
         min-height: 200px; /* Ensure some visibility */
-        border-radius: 0; /* Remove border-radius on mobile for full width */
-        border-left: none; /* Remove left border */
-        border-top: 1px solid rgba(255, 255, 255, 0.1); /* Add top border for separation */
       }
     }
 
@@ -1671,7 +1674,6 @@
       </div>
     </header>
     <div class="video-call-main-content">
-      <!-- Video Feeds Section (Top Left) -->
       <div class="video-feeds-section" id="video-feeds-section">
         <div class="video-feed-container" id="local-video-container">
           <video id="local-video" autoplay muted></video>
@@ -1682,9 +1684,8 @@
         </div>
         <!-- Remote video feeds will be added here dynamically -->
       </div>
-
-      <!-- Gemini Chat Box (Top Right) -->
-      <div class="gemini-chat-box">
+      <div class="right-panel">
+        <div class="gemini-chat-box">
           <h3>Gemini Chat</h3>
           <div class="chat-messages" id="gemini-chat-messages">
             </div>
@@ -1693,9 +1694,7 @@
             <button id="send-gemini-chat"><i class="fas fa-paper-plane"></i></button>
           </div>
         </div>
-
-      <!-- Music Player Section (Bottom Left) -->
-      <div class="music-player-section">
+        <div class="music-player-section">
           <h3>Music Player</h3>
           <p id="current-song-title">No song playing</p>
           <input type="range" id="music-volume-slider" min="0" max="1" step="0.01" value="0.5">
@@ -1705,9 +1704,7 @@
             <button id="music-next"><i class="fas fa-forward"></i></button>
           </div>
         </div>
-
-      <!-- Pomodoro Timer Section (Bottom Right) -->
-      <div class="pomodoro-section">
+        <div class="pomodoro-section">
           <h3>Pomodoro Timer</h3>
           <div class="pomodoro-time-select">
             <button data-time="25">25 min</button>
@@ -1717,10 +1714,11 @@
           </div>
           <div class="pomodoro-timer" id="pomodoro-timer-display">25:00</div>
           <div class="pomodoro-controls">
-            <button id="pomodoro-start-pause"><span id="pomodoro-start-pause-text">Start</span> <i class="fas fa-play"></i></button>
+            <button id="pomodoro-start-pause"><i class="fas fa-play"></i></button>
             <button id="pomodoro-reset"><i class="fas fa-redo"></i></button>
           </div>
         </div>
+      </div>
     </div>
   </div>
 
@@ -1915,7 +1913,6 @@
     const pomodoroTimerDisplay = document.getElementById('pomodoro-timer-display');
     const pomodoroTimeSelectButtons = document.querySelectorAll('.pomodoro-time-select button');
     const pomodoroStartPauseButton = document.getElementById('pomodoro-start-pause');
-    const pomodoroStartPauseText = document.getElementById('pomodoro-start-pause-text'); // New element for text
     const pomodoroResetButton = document.getElementById('pomodoro-reset');
     let pomodoroInterval;
     let pomodoroTimeLeft = 25 * 60; // Default to 25 minutes in seconds
@@ -2256,8 +2253,7 @@
       showCustomAlert('Apple login not implemented yet');
     });
 
-    // Removed mousemove parallax effect for login container as requested
-    /*
+    // Mousemove parallax effect for login container
     const throttle = (func, limit) => {
       let inThrottle;
       return function() {
@@ -2294,11 +2290,10 @@
       }
     };
 
-    document.removeEventListener('mousemove', throttle(handleMouseMove, 16));
-    document.removeEventListener('mouseleave', () => {
+    document.addEventListener('mousemove', throttle(handleMouseMove, 16));
+    document.addEventListener('mouseleave', () => {
       authContainer.style.transform = 'rotateY(0deg) rotateX(0deg)';
     });
-    */
 
     /**
      * Uploads an image to imgbb.com.
@@ -2979,17 +2974,14 @@
         if (reconnectTimeoutId) {
             clearTimeout(reconnectTimeoutId);
             reconnectTimeoutId = null;
-            console.log("Cleared pending reconnection timeout.");
         }
 
         try {
             // Request camera and microphone permissions if not already granted
             if (!localStream) {
-                console.log("Requesting local media stream...");
                 localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
                 localVideo.srcObject = localStream;
                 localVideo.muted = true; // Mute local preview
-                console.log("Local media stream obtained.");
             }
 
             // Destroy existing peer instance if any before creating a new one
@@ -2999,35 +2991,31 @@
                 peer = null;
             }
             
-            console.log("Initializing new PeerJS instance...");
             peer = new Peer(auth.currentUser.uid, {
-                host: '0.peerjs.com', // Using PeerServer cloud
+                host: '0.peerjs.com', // Changed to a more stable PeerServer cloud instance
                 secure: true, // Use HTTPS
                 port: 443,
                 debug: 3 // Add debug level for more verbose logging
             });
 
             peer.on('open', async (id) => {
-                console.log('PeerJS opened. My Peer ID:', id);
+                console.log('My Peer ID:', id);
                 hideLoadingScreen();
                 currentReconnectAttempt = 0; // Reset reconnect attempts on successful connection
 
                 // If joining an existing room, call existing participants
                 if (!isRoomCreator) {
-                    console.log("Joining existing room. Fetching participants...");
                     const roomDocRef = getRoomDocRef(currentRoomId);
                     const roomSnap = await getDoc(roomDocRef);
                     if (roomSnap.exists()) {
                         const participants = roomSnap.data().participants || [];
                         for (const participantId of participants) {
                             if (participantId !== auth.currentUser.uid) {
-                                console.log(`Attempting to call existing participant: ${participantId}`);
+                                console.log(`Calling ${participantId}`);
                                 const call = peer.call(participantId, localStream);
                                 setupCallListeners(call, participantId);
                             }
                         }
-                    } else {
-                        console.warn("Room document not found when trying to join existing participants.");
                     }
                 }
 
@@ -3040,18 +3028,16 @@
 
                 // Set up Firestore listener for room participants
                 if (currentRoomId) {
-                    console.log(`Setting up Firestore listener for room participants in room: ${currentRoomId}`);
                     roomParticipantsListener = onSnapshot(getRoomDocRef(currentRoomId), (docSnap) => {
                         if (docSnap.exists()) {
                             const roomData = docSnap.data();
                             const currentParticipants = roomData.participants || [];
                             const connectedPeerIds = Object.keys(connectedPeers);
-                            console.log("Firestore update: Current participants:", currentParticipants, "Connected peers:", connectedPeerIds);
 
                             // Add new participants
                             for (const participantId of currentParticipants) {
                                 if (participantId !== auth.currentUser.uid && !connectedPeerIds.includes(participantId)) {
-                                    console.log(`New participant detected: ${participantId}. Attempting to call...`);
+                                    console.log(`New participant detected: ${participantId}. Calling...`);
                                     const call = peer.call(participantId, localStream);
                                     setupCallListeners(call, participantId);
                                 }
@@ -3060,11 +3046,11 @@
                             // Remove disconnected participants
                             for (const connectedPeerId of connectedPeerIds) {
                                 if (!currentParticipants.includes(connectedPeerId)) {
-                                    console.log(`Participant ${connectedPeerId} left. Closing call and removing video element.`);
-                                    if (connectedPeers[connectedPeerId] && connectedPeers[connectedPeerId].call) {
+                                    console.log(`Participant ${connectedPeerId} left. Closing call.`);
+                                    if (connectedPeers[connectedPeerId].call) {
                                         connectedPeers[connectedPeerId].call.close();
                                     }
-                                    if (connectedPeers[connectedPeerId] && connectedPeers[connectedPeerId].videoElement) {
+                                    if (connectedPeers[connectedPeerId].videoElement) {
                                         connectedPeers[connectedPeerId].videoElement.parentElement.remove();
                                     }
                                     delete connectedPeers[connectedPeerId];
@@ -3072,7 +3058,7 @@
                             }
                         } else {
                             // Room no longer exists (e.g., creator ended it)
-                            console.log("Firestore update: Room no longer exists. Exiting call.");
+                            console.log("Room no longer exists. Exiting call.");
                             showCustomAlert("The room has been ended by the creator or no longer exists.").then(() => {
                                 exitRoom();
                             });
@@ -3092,16 +3078,13 @@
                     const reconnectDelay = Math.pow(2, currentReconnectAttempt) * 1000; // Exponential backoff
                     showCustomAlert(`Lost connection to video call. Attempting to reconnect in ${reconnectDelay / 1000} seconds... (Attempt ${currentReconnectAttempt}/${MAX_RECONNECT_ATTEMPTS})`);
                     reconnectTimeoutId = setTimeout(() => {
-                        console.log(`Reconnecting PeerJS (Attempt ${currentReconnectAttempt})...`);
                         if (currentRoomId && auth.currentUser) { // Only re-init if still in a room and authenticated
                             startVideoCall(maxParticipants); // Re-initialize PeerJS and call setup
                         } else {
-                            console.log("Not in a room or not authenticated, cannot reconnect. Exiting.");
                             exitRoom(); // If not in a room or logged out, just exit
                         }
                     }, reconnectDelay);
                 } else {
-                    console.error('Failed to reconnect to video call after multiple attempts. Exiting room.');
                     showCustomAlert('Failed to reconnect to video call after multiple attempts. Exiting room.');
                     exitRoom();
                 }
@@ -3115,16 +3098,13 @@
                     const reconnectDelay = Math.pow(2, currentReconnectAttempt) * 1000; // Exponential backoff
                     showCustomAlert(`PeerJS connection error: ${err.message}. Attempting to reconnect in ${reconnectDelay / 1000} seconds... (Attempt ${currentReconnectAttempt}/${MAX_RECONNECT_ATTEMPTS})`);
                     reconnectTimeoutId = setTimeout(() => {
-                        console.log(`Reconnecting PeerJS due to error (Attempt ${currentReconnectAttempt})...`);
                         if (currentRoomId && auth.currentUser) {
                             startVideoCall(maxParticipants);
                         } else {
-                            console.log("Not in a room or not authenticated, cannot reconnect. Exiting.");
                             exitRoom();
                         }
                     }, reconnectDelay);
                 } else {
-                    console.error('Persistent PeerJS errors. Exiting room.');
                     showCustomAlert('Persistent PeerJS errors. Exiting room.');
                     exitRoom();
                 }
@@ -3145,7 +3125,6 @@
      * @param {string} peerId - The ID of the remote peer.
      */
     function setupCallListeners(call, peerId) {
-        console.log(`Setting up call listeners for peer: ${peerId}`);
         call.on('stream', (remoteStream) => {
             console.log('Received remote stream from:', peerId);
             // Check if a video element for this peer already exists to prevent duplicates
@@ -3198,9 +3177,8 @@
                     videoElement: remoteVideo,
                     controls: controlsDiv
                 };
-                console.log(`Added remote video for peer: ${peerId}`);
             } else {
-                console.log(`Video feed for ${peerId} already exists or is being processed. Skipping.`);
+                console.log(`Video feed for ${peerId} already exists or is being processed.`);
             }
         });
 
@@ -3209,7 +3187,6 @@
             if (connectedPeers[peerId]) {
                 connectedPeers[peerId].videoElement.parentElement.remove();
                 delete connectedPeers[peerId];
-                console.log(`Removed remote video for peer: ${peerId}`);
             }
         });
 
@@ -3219,7 +3196,6 @@
             if (connectedPeers[peerId]) {
                 connectedPeers[peerId].videoElement.parentElement.remove();
                 delete connectedPeers[peerId];
-                console.log(`Removed remote video for peer: ${peerId} due to error.`);
             }
         });
     }
@@ -3234,7 +3210,6 @@
                 localCamToggle.classList.toggle('inactive', !videoTrack.enabled);
                 localCamToggle.querySelector('i').classList.toggle('fa-video-slash', !videoTrack.enabled);
                 localCamToggle.querySelector('i').classList.toggle('fa-video', videoTrack.enabled);
-                console.log(`Local camera toggled: ${videoTrack.enabled ? 'On' : 'Off'}`);
             }
         }
     });
@@ -3249,7 +3224,6 @@
                 localMicToggle.classList.toggle('inactive', !audioTrack.enabled);
                 localMicToggle.querySelector('i').classList.toggle('fa-microphone-slash', !audioTrack.enabled);
                 localMicToggle.querySelector('i').classList.toggle('fa-microphone', audioTrack.enabled);
-                console.log(`Local microphone toggled: ${audioTrack.enabled ? 'On' : 'Off'}`);
             }
         }
     });
@@ -3257,13 +3231,11 @@
     // Exit Room Function
     async function exitRoom() {
         showLoadingScreen();
-        console.log("Exiting room...");
 
         // Clear any pending reconnection attempts
         if (reconnectTimeoutId) {
             clearTimeout(reconnectTimeoutId);
             reconnectTimeoutId = null;
-            console.log("Cleared pending reconnection timeout during exit.");
         }
         currentReconnectAttempt = 0; // Reset attempts
 
@@ -3272,44 +3244,35 @@
             localStream.getTracks().forEach(track => track.stop());
             localVideo.srcObject = null;
             localStream = null;
-            console.log("Local media tracks stopped.");
         }
 
         // Close all PeerJS connections
         for (const peerId in connectedPeers) {
             if (connectedPeers[peerId].call) {
                 connectedPeers[peerId].call.close();
-                console.log(`Closed PeerJS call with ${peerId}.`);
             }
             if (connectedPeers[peerId].videoElement) {
                 connectedPeers[peerId].videoElement.parentElement.remove(); // Remove video element
-                console.log(`Removed video element for ${peerId}.`);
             }
             delete connectedPeers[peerId];
         }
         if (peer) {
             peer.destroy();
             peer = null;
-            console.log("PeerJS instance destroyed.");
         }
 
         // Stop music playback when exiting room
         pauseSong();
         currentAudio.currentTime = 0; // Reset music to start
-        console.log("Music stopped and reset.");
 
         // Remove user from room participants in Firestore
         if (currentRoomId && auth.currentUser) {
-            console.log(`Removing user ${auth.currentUser.uid} from room ${currentRoomId} participants.`);
             const roomDocRef = getRoomDocRef(currentRoomId); // Changed
             const roomSnap = await getDoc(roomDocRef);
             if (roomSnap.exists()) {
                 const roomData = roomSnap.data();
                 const updatedParticipants = roomData.participants.filter(uid => uid !== auth.currentUser.uid);
                 await updateDoc(roomDocRef, { participants: updatedParticipants });
-                console.log("User removed from Firestore room participants.");
-            } else {
-                console.warn("Room document not found during exit, cannot remove participant.");
             }
         }
 
@@ -3317,12 +3280,10 @@
         if (roomParticipantsListener) {
             roomParticipantsListener(); // Unsubscribe
             roomParticipantsListener = null;
-            console.log("Firestore room participants listener unsubscribed.");
         }
         if (roomStatusListener) {
             roomStatusListener(); // Unsubscribe
             roomStatusListener = null;
-            console.log("Firestore room status listener unsubscribed.");
         }
 
         currentRoomId = null;
@@ -3337,16 +3298,14 @@
 
     // End Room Function (Creator only)
     endRoomBtn.addEventListener('click', async () => {
-        showCustomAlert('Are you sure you want to end the room for everyone?').then(async (confirmed) => {
-            if (confirmed && currentRoomId && isRoomCreator) {
+        showCustomAlert('Are you sure you want to end the room for everyone?').then(async () => {
+            if (currentRoomId && isRoomCreator) {
                 showLoadingScreen();
-                console.log(`Ending room ${currentRoomId} for all participants.`);
                 try {
                     // Set room to inactive and then delete
                     const roomDocRef = getRoomDocRef(currentRoomId); // Changed
                     await updateDoc(roomDocRef, { isActive: false }); // Signal other users
                     await deleteDoc(roomDocRef); // Delete the room
-                    console.log("Room marked inactive and deleted from Firestore.");
                     showCustomAlert('Room ended for all participants.').then(() => {
                         exitRoom(); // Clean up local state and redirect
                     });
@@ -3361,10 +3320,8 @@
 
     // Exit Room Button Listener
     exitRoomBtn.addEventListener('click', () => {
-        showCustomAlert('Are you sure you want to exit the room?').then((confirmed) => {
-            if (confirmed) {
-                exitRoom();
-            }
+        showCustomAlert('Are you sure you want to exit the room?').then(() => {
+            exitRoom();
         });
     });
 
@@ -3542,9 +3499,7 @@
     function togglePomodoro() {
         if (pomodoroRunning) {
             clearInterval(pomodoroInterval);
-            pomodoroStartPauseText.textContent = 'Start';
-            pomodoroStartPauseButton.querySelector('i').classList.remove('fa-pause');
-            pomodoroStartPauseButton.querySelector('i').classList.add('fa-play');
+            pomodoroStartPauseButton.innerHTML = '<i class="fas fa-play"></i>';
         } else {
             pomodoroInterval = setInterval(() => {
                 if (pomodoroTimeLeft > 0) {
@@ -3553,15 +3508,11 @@
                 } else {
                     clearInterval(pomodoroInterval);
                     pomodoroRunning = false;
-                    pomodoroStartPauseText.textContent = 'Start';
-                    pomodoroStartPauseButton.querySelector('i').classList.remove('fa-pause');
-                    pomodoroStartPauseButton.querySelector('i').classList.add('fa-play');
+                    pomodoroStartPauseButton.innerHTML = '<i class="fas fa-play"></i>';
                     showCustomAlert('Pomodoro session finished!');
                 }
             }, 1000);
-            pomodoroStartPauseText.textContent = 'Pause';
-            pomodoroStartPauseButton.querySelector('i').classList.remove('fa-play');
-            pomodoroStartPauseButton.querySelector('i').classList.add('fa-pause');
+            pomodoroStartPauseButton.innerHTML = '<i class="fas fa-pause"></i>';
         }
         pomodoroRunning = !pomodoroRunning;
     }
@@ -3589,9 +3540,7 @@
         pomodoroRunning = false;
         pomodoroTimeLeft = parseInt(document.querySelector('.pomodoro-time-select button.active')?.dataset.time || '25') * 60;
         updatePomodoroDisplay();
-        pomodoroStartPauseText.textContent = 'Start';
-        pomodoroStartPauseButton.querySelector('i').classList.remove('fa-pause');
-        pomodoroStartPauseButton.querySelector('i').classList.add('fa-play');
+        pomodoroStartPauseButton.innerHTML = '<i class="fas fa-play"></i>';
     });
 
     // Initial Pomodoro display update
