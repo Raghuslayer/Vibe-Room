@@ -650,7 +650,8 @@
       opacity: 0.8;
     }
 
-    .profile-section nav {
+    .profile-section nav,
+    .viberoom-section nav { /* Apply to both navs */
       background: rgba(255, 255, 255, 0.05);
       backdrop-filter: blur(10px);
       padding: 15px 20px;
@@ -660,7 +661,8 @@
       margin: 0;
     }
 
-    .profile-section .nav-item {
+    .profile-section .nav-item,
+    .viberoom-section .nav-item { /* Apply to both nav items */
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -673,18 +675,21 @@
       border-radius: 10px;
     }
 
-    .profile-section .nav-item:hover {
+    .profile-section .nav-item:hover,
+    .viberoom-section .nav-item:hover { /* Apply to both nav items */
       color: #FF7B54;
       background: rgba(255, 255, 255, 0.1);
       transform: scale(1.1);
     }
 
-    .profile-section .nav-item.active {
+    .profile-section .nav-item.active,
+    .viberoom-section .nav-item.active { /* Apply to both nav items */
       color: #FF7B54;
       background: rgba(255, 255, 255, 0.1);
     }
 
-    .profile-section .nav-item.active::after {
+    .profile-section .nav-item.active::after,
+    .viberoom-section .nav-item.active::after { /* Apply to both nav items */
       content: '';
       position: absolute;
       bottom: -10px;
@@ -694,16 +699,19 @@
       border-radius: 2px;
     }
 
-    .profile-section .nav-item i {
+    .profile-section .nav-item i,
+    .viberoom-section .nav-item i { /* Apply to both nav items */
       font-size: 24px;
       transition: all 0.3s ease;
     }
 
-    .profile-section .nav-item.active i {
+    .profile-section .nav-item.active i,
+    .viberoom-section .nav-item.active i { /* Apply to both nav items */
       text-shadow: 0 0 10px rgba(255, 123, 84, 0.5);
     }
 
-    .profile-section .nav-item span {
+    .profile-section .nav-item span,
+    .viberoom-section .nav-item span { /* Apply to both nav items */
       font-size: 12px;
       font-weight: 500;
     }
@@ -999,7 +1007,7 @@
       flex-direction: column;
       width: 100vw;
       height: 100vh;
-      overflow: hidden;
+      overflow: hidden; /* Main container should not scroll */
       background: #13111C;
       position: relative;
       border: 5px solid transparent; /* For RGB glowing line */
@@ -1059,23 +1067,24 @@
     }
 
     .video-call-main-content {
-      flex: 1;
+      flex: 1; /* Takes remaining vertical space */
       display: flex;
       flex-direction: row;
       overflow: hidden;
+      height: calc(100vh - 70px); /* Adjust based on header height */
     }
 
     .video-feeds-section {
-      flex: 3; /* Takes 75% width */
+      flex: 0 0 60%; /* Takes 60% width */
       display: grid;
-      /* Adjust grid to match image: 2 columns if enough space, otherwise 1 */
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive grid */
       gap: 10px;
       padding: 10px;
       background: #221C3E;
       overflow-y: auto; /* Enable scrolling for video feeds */
       -ms-overflow-style: none;
       scrollbar-width: none;
+      height: 100%; /* Take full height of its flex container */
     }
     .video-feeds-section::-webkit-scrollbar {
       display: none;
@@ -1084,14 +1093,28 @@
     .video-feed-container {
       position: relative;
       width: 100%;
-      /* Maintain aspect ratio, e.g., 4:3 */
-      padding-bottom: 75%; 
+      padding-bottom: 75%; /* 4:3 Aspect Ratio (height is 75% of width) */
       background-color: #000;
       border-radius: 10px;
       overflow: hidden;
       display: flex;
       justify-content: center;
       align-items: center;
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 1.2em;
+      text-align: center;
+      flex-direction: column;
+    }
+    
+    .video-feed-container.placeholder .waiting-message {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .video-feed-container.placeholder video {
+      display: none; /* Hide video when it's a placeholder */
     }
 
     .video-feed-container video {
@@ -1102,6 +1125,7 @@
       height: 100%;
       object-fit: cover;
       border-radius: 10px;
+      display: block; /* Ensure video is visible by default */
     }
 
     .video-feed-controls {
@@ -1139,7 +1163,7 @@
 
 
     .right-panel {
-      flex: 1; /* Takes 25% width */
+      flex: 0 0 40%; /* Takes 40% width */
       display: flex;
       flex-direction: column;
       background: #1A162A;
@@ -1147,19 +1171,27 @@
       overflow-y: auto; /* Enable scrolling for the right panel */
       -ms-overflow-style: none;
       scrollbar-width: none;
+      height: 100%; /* Take full height of its flex container */
     }
     .right-panel::-webkit-scrollbar {
       display: none;
     }
 
-    .gemini-chat-box {
-      flex: 2; /* Takes 50% height of right panel */
-      display: flex;
-      flex-direction: column;
+    .gemini-chat-box, .music-player-section, .pomodoro-section {
       padding: 15px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      overflow: hidden;
+      flex-shrink: 0; /* Prevent shrinking below content size */
+      min-height: 150px; /* Ensure a minimum height for visibility */
+      overflow-y: auto; /* Enable internal scrolling if content overflows */
+      -ms-overflow-style: none;
+      scrollbar-width: none;
     }
+    .gemini-chat-box::-webkit-scrollbar,
+    .music-player-section::-webkit-scrollbar,
+    .pomodoro-section::-webkit-scrollbar {
+      display: none;
+    }
+
 
     .gemini-chat-box h3 {
       font-size: 18px;
@@ -1233,15 +1265,6 @@
       background: #7a4be0;
     }
 
-    .music-player-section {
-      flex: 1; /* Takes 25% height of right panel */
-      display: flex;
-      flex-direction: column;
-      padding: 15px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      overflow: hidden;
-    }
-
     .music-player-section h3 {
       font-size: 18px;
       margin-bottom: 10px;
@@ -1292,14 +1315,6 @@
         background: #FF7B54;
         cursor: pointer;
         box-shadow: 0 0 5px rgba(255, 123, 84, 0.5);
-    }
-
-    .pomodoro-section {
-      flex: 1; /* Takes 25% height of right panel */
-      display: flex;
-      flex-direction: column;
-      padding: 15px;
-      overflow: hidden;
     }
 
     .pomodoro-section h3 {
@@ -1359,28 +1374,31 @@
       box-shadow: 0 0 10px rgba(138, 43, 226, 0.5);
     }
 
+    /* Media queries for responsive layout */
     @media (max-width: 768px) {
       .video-call-main-content {
-        flex-direction: column;
+        flex-direction: column; /* Stack vertically on mobile */
+        height: auto; /* Allow height to be determined by content */
+        overflow-y: auto; /* Enable scrolling for the entire main content */
       }
       .video-feeds-section {
+        flex: none; /* Remove flex basis */
+        width: 100%; /* Take full width */
+        height: auto; /* Allow content to dictate height */
+        max-height: 60vh; /* Limit height to prevent excessive scrolling for feeds */
         grid-template-columns: 1fr; /* Single column on mobile */
-        flex: none;
-        width: 100%;
-        height: auto; /* Allow height to be determined by content */
-        max-height: 50vh; /* Limit height to prevent excessive scrolling */
       }
       .right-panel {
-        flex: none;
-        width: 100%;
-        height: auto;
+        flex: none; /* Remove flex basis */
+        width: 100%; /* Take full width */
+        height: auto; /* Allow content to dictate height */
         border-left: none;
         border-top: 1px solid rgba(255, 255, 255, 0.1);
+        overflow-y: auto; /* Ensure right panel scrolls */
+        padding-bottom: 20px; /* Add some padding at the bottom */
       }
       .gemini-chat-box, .music-player-section, .pomodoro-section {
-        flex: none; /* Allow content to dictate height */
-        height: auto;
-        min-height: 200px; /* Ensure some visibility */
+        min-height: 180px; /* Slightly more height for better mobile experience */
       }
     }
 
@@ -1675,6 +1693,7 @@
     </header>
     <div class="video-call-main-content">
       <div class="video-feeds-section" id="video-feeds-section">
+        <!-- Local video feed container is always present -->
         <div class="video-feed-container" id="local-video-container">
           <video id="local-video" autoplay muted></video>
           <div class="video-feed-controls">
@@ -1682,7 +1701,28 @@
             <button id="local-mic-toggle"><i class="fas fa-microphone"></i></button>
           </div>
         </div>
-        <!-- Remote video feeds will be added here dynamically -->
+        <!-- Placeholder video feeds for remote participants -->
+        <div class="video-feed-container placeholder" data-peer-id="placeholder-1">
+          <div class="waiting-message">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Waiting for participant...</p>
+          </div>
+          <video></video>
+        </div>
+        <div class="video-feed-container placeholder" data-peer-id="placeholder-2">
+          <div class="waiting-message">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Waiting for participant...</p>
+          </div>
+          <video></video>
+        </div>
+        <div class="video-feed-container placeholder" data-peer-id="placeholder-3">
+          <div class="waiting-message">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Waiting for participant...</p>
+          </div>
+          <video></video>
+        </div>
       </div>
       <div class="right-panel">
         <div class="gemini-chat-box">
@@ -2725,13 +2765,13 @@
         viberoomSection.classList.remove('hidden');
         viberoomSection.classList.add('visible');
         document.body.classList.remove('profile-active'); // Ensure background is visible if coming from profile
-        document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-        navVibeRoomMain.classList.add('active'); // Set VibeRoom nav item active
-        // Ensure VibeRoom nav items have icons
-        navVibeRoomHome.innerHTML = '<i class="fas fa-home"></i><span>Home</span>';
-        navVibeRoomMain.innerHTML = '<i class="fas fa-music"></i><span>VibeRoom</span>';
-        navVibeRoomBuddies.innerHTML = '<i class="fas fa-user-group"></i><span>Buddies</span>';
-        navVibeRoomProfile.innerHTML = '<i class="fas fa-user"></i><span>Profile</span>';
+        
+        // Remove active class from all nav items in both navbars
+        document.querySelectorAll('.profile-section .nav-item').forEach(item => item.classList.remove('active'));
+        document.querySelectorAll('.viberoom-section .nav-item').forEach(item => item.classList.remove('active'));
+        
+        // Set VibeRoom nav item active in the viberoom-section navbar
+        navVibeRoomMain.classList.add('active'); 
     }
 
     // Event listener for VibeRoom main navigation item
@@ -2756,8 +2796,13 @@
         viberoomSection.classList.add('hidden');
         viberoomSection.classList.remove('visible');
         document.body.classList.add('profile-active');
-        document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-        document.getElementById('nav-profile').classList.add('active'); // Set profile nav item active
+        
+        // Remove active class from all nav items in both navbars
+        document.querySelectorAll('.profile-section .nav-item').forEach(item => item.classList.remove('active'));
+        document.querySelectorAll('.viberoom-section .nav-item').forEach(item => item.classList.remove('active'));
+        
+        // Set profile nav item active in the profile-section navbar
+        document.getElementById('nav-profile').classList.add('active'); 
     });
 
     // --- Private Room Logic ---
@@ -2774,6 +2819,9 @@
         privateRoomActionButton.textContent = 'Create Room';
         createdRoomDetails.classList.add('hidden'); // Hide details when creating
         privateRoomModal.style.display = 'flex';
+        roomMaxPersonsSelect.parentElement.classList.remove('hidden'); // Ensure max persons is visible for creating
+        roomCategorySelect.parentElement.classList.remove('hidden'); // Ensure category is visible for creating
+        privateRoomActionButton.classList.remove('hidden'); // Ensure create button is visible
     });
 
     joinRoomOption.addEventListener('click', () => {
@@ -2788,6 +2836,7 @@
         privateRoomActionButton.textContent = 'Join Room';
         createdRoomDetails.classList.add('hidden'); // Hide details when joining
         privateRoomModal.style.display = 'flex';
+        privateRoomActionButton.classList.remove('hidden'); // Ensure join button is visible
     });
 
     closePrivateRoomModal.addEventListener('click', () => {
@@ -2797,6 +2846,8 @@
         joinRoomPasswordInput.value = '';
         roomMaxPersonsSelect.parentElement.classList.remove('hidden'); // Show max persons again
         roomCategorySelect.parentElement.classList.remove('hidden'); // Show category again
+        privateRoomActionButton.classList.remove('hidden'); // Show action button
+        createdRoomDetails.classList.add('hidden'); // Hide details
     });
 
     // Handle "Coming Soon" categories
@@ -2952,6 +3003,32 @@
     // --- Video Call Room Logic ---
 
     /**
+     * Updates the grid layout of video feeds based on the number of active participants.
+     * @param {number} activeParticipantsCount - The current number of active video feeds (including local).
+     */
+    function updateVideoFeedLayout(activeParticipantsCount) {
+        if (activeParticipantsCount === 1) {
+            videoFeedsSection.style.gridTemplateColumns = '1fr';
+            videoFeedsSection.style.gridTemplateRows = '1fr';
+        } else if (activeParticipantsCount === 2) {
+            videoFeedsSection.style.gridTemplateColumns = '1fr 1fr';
+            videoFeedsSection.style.gridTemplateRows = '1fr';
+        } else if (activeParticipantsCount === 3 || activeParticipantsCount === 4) {
+            videoFeedsSection.style.gridTemplateColumns = '1fr 1fr';
+            videoFeedsSection.style.gridTemplateRows = '1fr 1fr';
+        }
+        // Hide/show placeholder containers based on activeParticipantsCount
+        const allFeedContainers = videoFeedsSection.querySelectorAll('.video-feed-container');
+        for (let i = 0; i < allFeedContainers.length; i++) {
+            if (i < activeParticipantsCount) {
+                allFeedContainers[i].classList.remove('hidden-feed'); // Ensure it's visible
+            } else {
+                allFeedContainers[i].classList.add('hidden-feed'); // Hide extra placeholders
+            }
+        }
+    }
+
+    /**
      * Initializes PeerJS and gets local media stream.
      * @param {number} maxParticipants - Maximum number of participants in the room.
      */
@@ -2975,6 +3052,30 @@
             clearTimeout(reconnectTimeoutId);
             reconnectTimeoutId = null;
         }
+
+        // Reset all video feed containers to placeholder state
+        const allFeedContainers = videoFeedsSection.querySelectorAll('.video-feed-container');
+        allFeedContainers.forEach((container, index) => {
+            if (container.id !== 'local-video-container') { // Don't reset local video
+                container.classList.add('placeholder');
+                container.innerHTML = `
+                    <div class="waiting-message">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Waiting for participant...</p>
+                    </div>
+                    <video></video>
+                `;
+                container.querySelector('video').srcObject = null;
+            }
+            // Initially hide all but local, will be shown by updateVideoFeedLayout
+            if (index > 0) {
+                container.classList.add('hidden-feed');
+            }
+        });
+
+        // Update layout for 1 participant (local user)
+        updateVideoFeedLayout(1);
+
 
         try {
             // Request camera and microphone permissions if not already granted
@@ -3033,6 +3134,10 @@
                             const roomData = docSnap.data();
                             const currentParticipants = roomData.participants || [];
                             const connectedPeerIds = Object.keys(connectedPeers);
+                            const activeParticipantsCount = currentParticipants.length;
+
+                            // Update layout based on current number of participants
+                            updateVideoFeedLayout(activeParticipantsCount);
 
                             // Add new participants
                             for (const participantId of currentParticipants) {
@@ -3050,8 +3155,19 @@
                                     if (connectedPeers[connectedPeerId].call) {
                                         connectedPeers[connectedPeerId].call.close();
                                     }
-                                    if (connectedPeers[connectedPeerId].videoElement) {
-                                        connectedPeers[connectedPeerId].videoElement.parentElement.remove();
+                                    // Revert the container to a placeholder state
+                                    const container = document.querySelector(`.video-feed-container[data-peer-id="${connectedPeerId}"]`);
+                                    if (container) {
+                                        container.classList.add('placeholder');
+                                        container.innerHTML = `
+                                            <div class="waiting-message">
+                                                <i class="fas fa-spinner fa-spin"></i>
+                                                <p>Waiting for participant...</p>
+                                            </div>
+                                            <video></video>
+                                        `;
+                                        container.querySelector('video').srcObject = null;
+                                        container.classList.add('hidden-feed'); // Hide it until new participant
                                     }
                                     delete connectedPeers[connectedPeerId];
                                 }
@@ -3127,66 +3243,91 @@
     function setupCallListeners(call, peerId) {
         call.on('stream', (remoteStream) => {
             console.log('Received remote stream from:', peerId);
-            // Check if a video element for this peer already exists to prevent duplicates
-            if (!connectedPeers[peerId] && !document.querySelector(`.video-feed-container[data-peer-id="${peerId}"]`)) {
-                const videoContainer = document.createElement('div');
-                videoContainer.classList.add('video-feed-container');
-                videoContainer.dataset.peerId = peerId; // Store peerId for easy lookup
-
-                const remoteVideo = document.createElement('video');
-                remoteVideo.srcObject = remoteStream;
-                remoteVideo.autoplay = true;
-                remoteVideo.playsinline = true; // Important for iOS
-
-                const controlsDiv = document.createElement('div');
-                controlsDiv.classList.add('video-feed-controls');
-
-                const camToggleBtn = document.createElement('button');
-                camToggleBtn.innerHTML = '<i class="fas fa-video"></i>';
-                camToggleBtn.classList.add('active'); // Assume active initially
-                camToggleBtn.addEventListener('click', () => {
-                    // Toggle remote video display (local control)
-                    remoteVideo.style.display = remoteVideo.style.display === 'none' ? 'block' : 'none';
-                    camToggleBtn.classList.toggle('active');
-                    camToggleBtn.classList.toggle('inactive');
-                    camToggleBtn.querySelector('i').classList.toggle('fa-video-slash');
-                    camToggleBtn.querySelector('i').classList.toggle('fa-video');
-                });
-
-                const micToggleBtn = document.createElement('button');
-                micToggleBtn.innerHTML = '<i class="fas fa-microphone"></i>';
-                micToggleBtn.classList.add('active'); // Assume active initially
-                micToggleBtn.addEventListener('click', () => {
-                    // Toggle remote audio (local control)
-                    remoteVideo.muted = !remoteVideo.muted;
-                    micToggleBtn.classList.toggle('active');
-                    micToggleBtn.classList.toggle('inactive');
-                    micToggleBtn.querySelector('i').classList.toggle('fa-microphone-slash');
-                    micToggleBtn.querySelector('i').classList.toggle('fa-microphone');
-                });
-
-                controlsDiv.appendChild(camToggleBtn);
-                controlsDiv.appendChild(micToggleBtn);
-                videoContainer.appendChild(remoteVideo);
-                videoContainer.appendChild(controlsDiv);
-                videoFeedsSection.appendChild(videoContainer);
-
-                connectedPeers[peerId] = {
-                    call: call,
-                    stream: remoteStream,
-                    videoElement: remoteVideo,
-                    controls: controlsDiv
-                };
-            } else {
-                console.log(`Video feed for ${peerId} already exists or is being processed.`);
+            // Find an available placeholder or an existing container for this peer
+            let videoContainer = document.querySelector(`.video-feed-container[data-peer-id="${peerId}"]`);
+            if (!videoContainer) {
+                // If not found, find the first available placeholder
+                videoContainer = document.querySelector('.video-feed-container.placeholder');
+                if (!videoContainer) {
+                    console.warn('No available placeholder video containers.');
+                    return;
+                }
+                videoContainer.dataset.peerId = peerId; // Assign peerId to the placeholder
             }
+
+            videoContainer.classList.remove('placeholder');
+            videoContainer.classList.remove('hidden-feed'); // Ensure it's visible
+
+            // Clear existing content and add video element and controls
+            videoContainer.innerHTML = ''; // Clear placeholder content
+
+            const remoteVideo = document.createElement('video');
+            remoteVideo.srcObject = remoteStream;
+            remoteVideo.autoplay = true;
+            remoteVideo.playsinline = true; // Important for iOS
+
+            const controlsDiv = document.createElement('div');
+            controlsDiv.classList.add('video-feed-controls');
+
+            const camToggleBtn = document.createElement('button');
+            camToggleBtn.innerHTML = '<i class="fas fa-video"></i>';
+            camToggleBtn.classList.add('active'); // Assume active initially
+            camToggleBtn.addEventListener('click', () => {
+                // Toggle remote video display (local control)
+                remoteVideo.style.display = remoteVideo.style.display === 'none' ? 'block' : 'none';
+                camToggleBtn.classList.toggle('active');
+                camToggleBtn.classList.toggle('inactive');
+                camToggleBtn.querySelector('i').classList.toggle('fa-video-slash');
+                camToggleBtn.querySelector('i').classList.toggle('fa-video');
+            });
+
+            const micToggleBtn = document.createElement('button');
+            micToggleBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+            micToggleBtn.classList.add('active'); // Assume active initially
+            micToggleBtn.addEventListener('click', () => {
+                // Toggle remote audio (local control)
+                remoteVideo.muted = !remoteVideo.muted;
+                micToggleBtn.classList.toggle('active');
+                micToggleBtn.classList.toggle('inactive');
+                micToggleBtn.querySelector('i').classList.toggle('fa-microphone-slash');
+                micToggleBtn.querySelector('i').classList.toggle('fa-microphone');
+            });
+
+            controlsDiv.appendChild(camToggleBtn);
+            controlsDiv.appendChild(micToggleBtn);
+            videoContainer.appendChild(remoteVideo);
+            videoContainer.appendChild(controlsDiv);
+            
+            connectedPeers[peerId] = {
+                call: call,
+                stream: remoteStream,
+                videoElement: remoteVideo,
+                controls: controlsDiv,
+                container: videoContainer // Store the container reference
+            };
         });
 
         call.on('close', () => {
             console.log('Call closed with:', peerId);
             if (connectedPeers[peerId]) {
-                connectedPeers[peerId].videoElement.parentElement.remove();
+                const container = connectedPeers[peerId].container;
+                if (container) {
+                    container.classList.add('placeholder');
+                    container.innerHTML = `
+                        <div class="waiting-message">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            <p>Waiting for participant...</p>
+                        </div>
+                        <video></video>
+                    `;
+                    container.querySelector('video').srcObject = null;
+                    container.removeAttribute('data-peer-id'); // Remove peer ID
+                    container.classList.add('hidden-feed'); // Hide it until new participant
+                }
                 delete connectedPeers[peerId];
+                // Recalculate layout after a peer disconnects
+                const activeParticipantsCount = 1 + Object.keys(connectedPeers).length; // 1 for local user
+                updateVideoFeedLayout(activeParticipantsCount);
             }
         });
 
@@ -3194,8 +3335,24 @@
             console.error('Call error with', peerId, ':', err);
             showCustomAlert(`Call error with ${peerId}: ${err.message}`);
             if (connectedPeers[peerId]) {
-                connectedPeers[peerId].videoElement.parentElement.remove();
+                const container = connectedPeers[peerId].container;
+                if (container) {
+                    container.classList.add('placeholder');
+                    container.innerHTML = `
+                        <div class="waiting-message">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <p>Error with participant's feed.</p>
+                        </div>
+                        <video></video>
+                    `;
+                    container.querySelector('video').srcObject = null;
+                    container.removeAttribute('data-peer-id'); // Remove peer ID
+                    container.classList.add('hidden-feed'); // Hide it
+                }
                 delete connectedPeers[peerId];
+                // Recalculate layout after an error
+                const activeParticipantsCount = 1 + Object.keys(connectedPeers).length; // 1 for local user
+                updateVideoFeedLayout(activeParticipantsCount);
             }
         });
     }
@@ -3251,8 +3408,20 @@
             if (connectedPeers[peerId].call) {
                 connectedPeers[peerId].call.close();
             }
-            if (connectedPeers[peerId].videoElement) {
-                connectedPeers[peerId].videoElement.parentElement.remove(); // Remove video element
+            // Revert the container to a placeholder state
+            const container = connectedPeers[peerId].container;
+            if (container) {
+                container.classList.add('placeholder');
+                container.innerHTML = `
+                    <div class="waiting-message">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Waiting for participant...</p>
+                    </div>
+                    <video></video>
+                `;
+                container.querySelector('video').srcObject = null;
+                container.removeAttribute('data-peer-id'); // Remove peer ID
+                container.classList.add('hidden-feed'); // Hide it
             }
             delete connectedPeers[peerId];
         }
@@ -3297,7 +3466,7 @@
     }
 
     // End Room Function (Creator only)
-    endRoomBtn.addEventListener('click', async () => {
+    endRoomBtn.addEventListener('click', () => {
         showCustomAlert('Are you sure you want to end the room for everyone?').then(async () => {
             if (currentRoomId && isRoomCreator) {
                 showLoadingScreen();
@@ -3350,7 +3519,7 @@
 
         try {
           const payload = { contents: chatHistory };
-          const apiKey = "AIzaSyDf6RP1GvUleF7TZsu1Jz6xy48GySXdoaQ"; // Canvas will provide this at runtime
+          const apiKey = "AIzaSyBmEW0rkauNzhVD5xRxDlrElJw-7PZi7sc"; // Canvas will provide this at runtime
           const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
           const response = await fetch(apiUrl, {
