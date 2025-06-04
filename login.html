@@ -1058,18 +1058,21 @@
       transform: translateY(-1px);
     }
 
+    /* Updated Grid Layout for .video-call-main-content */
     .video-call-main-content {
       flex: 1;
-      display: flex;
-      flex-direction: row;
-      overflow: hidden;
+      display: grid; /* Use grid for main content layout */
+      grid-template-columns: 2fr 1fr; /* Video feeds (left), Chat (right) */
+      grid-template-rows: auto 100px; /* Main content, Control panel */
+      height: 100%; /* Take full height of parent */
+      overflow: hidden; /* Prevent scrolling on this container */
     }
 
     .video-feeds-section {
-      flex: 3; /* Takes 75% width */
+      grid-column: 1;
+      grid-row: 1;
       display: grid;
-      /* Adjust grid to match image: 2 columns if enough space, otherwise 1 */
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Dynamic grid for video feeds */
       gap: 10px;
       padding: 10px;
       background: #221C3E;
@@ -1084,14 +1087,24 @@
     .video-feed-container {
       position: relative;
       width: 100%;
-      /* Maintain aspect ratio, e.g., 4:3 */
-      padding-bottom: 75%; 
+      padding-bottom: 75%; /* Maintain aspect ratio, e.g., 4:3 */
       background-color: #000;
       border-radius: 10px;
       overflow: hidden;
       display: flex;
       justify-content: center;
       align-items: center;
+      border: 1px solid #ccc; /* Clear separation */
+      background: #ff9933; /* Orange from mockup */
+      box-shadow: 0 0 10px rgba(255, 0, 0, 0.7); /* Initial glow */
+      animation: glow 3s infinite; /* RGB glow animation */
+    }
+
+    @keyframes glow {
+      0% { box-shadow: 0 0 10px rgba(255, 0, 0, 0.7); }
+      33% { box-shadow: 0 0 10px rgba(0, 255, 0, 0.7); }
+      66% { box-shadow: 0 0 10px rgba(0, 0, 255, 0.7); }
+      100% { box-shadow: 0 0 10px rgba(255, 0, 0, 0.7); }
     }
 
     .video-feed-container video {
@@ -1137,9 +1150,9 @@
       color: #FF7B54; /* Red for inactive */
     }
 
-
     .right-panel {
-      flex: 1; /* Takes 25% width */
+      grid-column: 2;
+      grid-row: 1;
       display: flex;
       flex-direction: column;
       background: #1A162A;
@@ -1153,7 +1166,7 @@
     }
 
     .gemini-chat-box {
-      flex: 2; /* Takes 50% height of right panel */
+      flex: 1; /* Takes remaining height of right panel */
       display: flex;
       flex-direction: column;
       padding: 15px;
@@ -1233,18 +1246,30 @@
       background: #7a4be0;
     }
 
-    .music-player-section {
-      flex: 1; /* Takes 25% height of right panel */
+    /* Control Panel for Music and Pomodoro */
+    .control-panel {
+      grid-column: 1 / 3; /* Spans both columns */
+      grid-row: 2;
       display: flex;
-      flex-direction: column;
-      padding: 15px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      overflow: hidden;
+      justify-content: space-between; /* Music player left, timer right */
+      align-items: center;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 10px 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      overflow: hidden; /* Prevent internal scrolling */
     }
 
-    .music-player-section h3 {
-      font-size: 18px;
-      margin-bottom: 10px;
+    .music-player-section, .pomodoro-section {
+      flex: 1; /* Take equal space within control panel */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 10px;
+    }
+
+    .music-player-section h3, .pomodoro-section h3 {
+      font-size: 16px;
+      margin-bottom: 5px;
       color: #FFB26B;
     }
 
@@ -1252,18 +1277,18 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 15px;
-      margin-top: 10px;
+      gap: 10px;
+      margin-top: 5px;
     }
 
     .music-controls button {
       background: rgba(255, 255, 255, 0.1);
       border: none;
-      width: 40px;
-      height: 40px;
+      width: 35px;
+      height: 35px;
       border-radius: 50%;
       color: white;
-      font-size: 18px;
+      font-size: 16px;
       cursor: pointer;
       transition: background 0.3s ease;
     }
@@ -1274,9 +1299,9 @@
 
     .music-player-section input[type="range"] {
         width: 80%;
-        margin: 10px auto;
+        margin: 5px auto;
         -webkit-appearance: none;
-        height: 8px;
+        height: 6px;
         border-radius: 5px;
         background: rgba(255, 255, 255, 0.2);
         outline: none;
@@ -1286,46 +1311,32 @@
     .music-player-section input[type="range"]::-webkit-slider-thumb {
         -webkit-appearance: none;
         appearance: none;
-        width: 20px;
-        height: 20px;
+        width: 18px;
+        height: 18px;
         border-radius: 50%;
         background: #FF7B54;
         cursor: pointer;
         box-shadow: 0 0 5px rgba(255, 123, 84, 0.5);
     }
 
-    .pomodoro-section {
-      flex: 1; /* Takes 25% height of right panel */
-      display: flex;
-      flex-direction: column;
-      padding: 15px;
-      overflow: hidden;
-    }
-
-    .pomodoro-section h3 {
-      font-size: 18px;
-      margin-bottom: 10px;
-      color: #6366F1;
-    }
-
     .pomodoro-timer {
-      font-size: 48px;
+      font-size: 36px; /* Adjusted for smaller control panel */
       font-weight: 700;
       text-align: center;
-      margin-bottom: 15px;
+      margin-bottom: 10px;
     }
 
     .pomodoro-controls {
       display: flex;
       justify-content: center;
-      gap: 10px;
+      gap: 8px;
     }
 
     .pomodoro-controls button {
       background: rgba(255, 255, 255, 0.1);
       border: none;
-      padding: 8px 15px;
-      border-radius: 15px;
+      padding: 6px 12px;
+      border-radius: 12px;
       color: white;
       cursor: pointer;
       transition: background 0.3s ease;
@@ -1339,18 +1350,19 @@
       display: flex;
       justify-content: center;
       flex-wrap: wrap; /* Allow buttons to wrap */
-      gap: 10px;
-      margin-bottom: 15px;
+      gap: 8px;
+      margin-bottom: 10px;
     }
 
     .pomodoro-time-select button {
       background: rgba(138, 43, 226, 0.2);
       border: 1px solid rgba(138, 43, 226, 0.5);
-      padding: 8px 12px;
-      border-radius: 10px;
+      padding: 6px 10px;
+      border-radius: 8px;
       color: white;
       cursor: pointer;
       transition: all 0.3s ease;
+      font-size: 12px; /* Smaller font for buttons */
     }
 
     .pomodoro-time-select button.active,
@@ -1361,26 +1373,43 @@
 
     @media (max-width: 768px) {
       .video-call-main-content {
-        flex-direction: column;
+        grid-template-columns: 1fr; /* Stack on mobile */
+        grid-template-rows: auto auto auto; /* Video, Chat, Control Panel */
+        overflow-y: auto; /* Allow scrolling for the entire video call room on mobile */
       }
       .video-feeds-section {
-        grid-template-columns: 1fr; /* Single column on mobile */
+        grid-column: 1;
+        grid-row: 1;
         flex: none;
         width: 100%;
         height: auto; /* Allow height to be determined by content */
         max-height: 50vh; /* Limit height to prevent excessive scrolling */
       }
       .right-panel {
+        grid-column: 1;
+        grid-row: 2; /* Chat moves below video feeds */
         flex: none;
         width: 100%;
         height: auto;
         border-left: none;
         border-top: 1px solid rgba(255, 255, 255, 0.1);
       }
+      .control-panel {
+        grid-column: 1;
+        grid-row: 3; /* Control panel moves to bottom */
+        flex-direction: column; /* Stack music and pomodoro vertically */
+        height: auto; /* Allow height to adjust */
+        padding: 10px;
+      }
       .gemini-chat-box, .music-player-section, .pomodoro-section {
         flex: none; /* Allow content to dictate height */
         height: auto;
-        min-height: 200px; /* Ensure some visibility */
+        min-height: 150px; /* Ensure some visibility */
+        width: 100%; /* Full width on mobile */
+        padding: 10px;
+      }
+      .music-player-section {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Add separator */
       }
     }
 
@@ -1396,10 +1425,12 @@
       animation: blink 1.4s infinite;
     }
 
+    .loading-dots span:nth-child(1) {
+      animation-delay: 0s;
+    }
     .loading-dots span:nth-child(2) {
       animation-delay: 0.2s;
     }
-
     .loading-dots span:nth-child(3) {
       animation-delay: 0.4s;
     }
@@ -1408,6 +1439,26 @@
       0% { opacity: 0; }
       50% { opacity: 1; }
       100% { opacity: 0; }
+    }
+
+    /* Styling for end/exit room buttons */
+    .room-actions button {
+      margin: 10px;
+      padding: 10px 20px;
+      background: #3399ff; /* Blue from mockup */
+      border-radius: 20px;
+      color: white;
+      font-weight: 500;
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+
+    .room-actions button#end-room-btn:hover {
+      background: #ff3333; /* Red for end */
+      box-shadow: 0 0 10px rgba(255, 51, 51, 0.5);
+    }
+    .room-actions button#exit-room-btn:hover {
+      background: #2a7acc; /* Darker blue for exit */
+      box-shadow: 0 0 10px rgba(51, 153, 255, 0.5);
     }
   </style>
 </head>
@@ -1669,6 +1720,8 @@
     <header class="video-call-header">
       <h2 id="current-room-name">VibeRoom Call</h2>
       <div class="room-actions">
+        <!-- User ID will be displayed here for multi-user apps -->
+        <span id="current-user-id" style="font-size: 14px; color: rgba(255, 255, 255, 0.7); margin-right: 10px;"></span>
         <button id="end-room-btn" class="hidden">End Room</button>
         <button id="exit-room-btn">Exit Room</button>
       </div>
@@ -1694,6 +1747,9 @@
             <button id="send-gemini-chat"><i class="fas fa-paper-plane"></i></button>
           </div>
         </div>
+      </div>
+      <!-- Control Panel moved to grid-row 2 -->
+      <div class="control-panel">
         <div class="music-player-section">
           <h3>Music Player</h3>
           <p id="current-song-title">No song playing</p>
@@ -1759,22 +1815,24 @@
       signInWithPopup,
       updateProfile,
       onAuthStateChanged,
-      signOut
+      signOut,
+      signInAnonymously,
+      signInWithCustomToken
     } from 'https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js';
     import { getFirestore, doc, setDoc, getDoc, updateDoc, onSnapshot, collection, query, where, getDocs, deleteDoc } from 'https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js';
     import { getDatabase, ref, set, onDisconnect, serverTimestamp, remove, onValue } from 'https://www.gstatic.com/firebasejs/10.13.2/firebase-database.js';
-    import { signInAnonymously, signInWithCustomToken } from 'https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js';
 
 
     // Firebase configuration
     // Use the global __firebase_config variable if available, otherwise use a default
     const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
-      apiKey: "AIzaSyC1Si1eckeNa-aF2RtQzIDckDhbvZlI66A",
-      authDomain: "viberoom-3af1f.firebaseapp.com",
-      projectId: "viberoom-3af1f",
-      storageBucket: "viberoom-3af1f.firebasestorage.app",
-      messagingSenderId: "84466588442",
-      appId: "1:84466588442:web:b2100ca39f2b25dba36aa3"
+     apiKey: "AIzaSyC1Si1eckeNa-aF2RtQzIDckDhbvZlI66A",
+  authDomain: "viberoom-3af1f.firebaseapp.com",
+  projectId: "viberoom-3af1f",
+  storageBucket: "viberoom-3af1f.firebasestorage.app",
+  messagingSenderId: "84466588442",
+  appId: "1:84466588442:web:b2100ca39f2b25dba36aa3"
+
     };
 
     // Initialize Firebase
@@ -1886,7 +1944,7 @@
     const localCamToggle = document.getElementById('local-cam-toggle');
     const localMicToggle = document.getElementById('local-mic-toggle');
     const localVideoContainer = document.getElementById('local-video-container');
-
+    const currentUserIdDisplay = document.getElementById('current-user-id'); // Added for user ID display
 
     // Gemini Chat elements
     const geminiChatMessages = document.getElementById('gemini-chat-messages');
@@ -1934,7 +1992,7 @@
     let reconnectTimeoutId = null;
 
 
-    // ImgBB API Key
+    // ImgBB API Key (Note: For security, consider moving this to a backend or environment variable)
     const IMGBB_API_KEY = 'ed2da0de64a3e62a7c622a3edbae9419';
 
     // Data for dropdowns
@@ -2640,6 +2698,7 @@
     onAuthStateChanged(auth, async (user) => {
         if (user) {
             console.log("User signed in:", user.uid);
+            currentUserIdDisplay.textContent = `Your ID: ${user.uid}`; // Display user ID
             // Ensure profile data is loaded and status is set online.
             // loadProfile will also set the initial status display.
             await loadProfile(user);
@@ -2665,6 +2724,7 @@
 
         } else {
             console.log("User signed out.");
+            currentUserIdDisplay.textContent = ''; // Clear user ID display
             // Reset UI to login state
             document.body.classList.remove('profile-active');
             authContainer.classList.remove('hidden');
@@ -2774,6 +2834,9 @@
         privateRoomActionButton.textContent = 'Create Room';
         createdRoomDetails.classList.add('hidden'); // Hide details when creating
         privateRoomModal.style.display = 'flex';
+        // Ensure max persons and category are visible when creating
+        roomMaxPersonsSelect.parentElement.classList.remove('hidden');
+        roomCategorySelect.parentElement.classList.remove('hidden');
     });
 
     joinRoomOption.addEventListener('click', () => {
@@ -2797,6 +2860,7 @@
         joinRoomPasswordInput.value = '';
         roomMaxPersonsSelect.parentElement.classList.remove('hidden'); // Show max persons again
         roomCategorySelect.parentElement.classList.remove('hidden'); // Show category again
+        privateRoomActionButton.classList.remove('hidden'); // Show action button
     });
 
     // Handle "Coming Soon" categories
@@ -3056,6 +3120,8 @@
                                     delete connectedPeers[connectedPeerId];
                                 }
                             }
+                            // Dynamically adjust video layout based on participant count
+                            updateVideoLayout(currentParticipants.length);
                         } else {
                             // Room no longer exists (e.g., creator ended it)
                             console.log("Room no longer exists. Exiting call.");
@@ -3117,6 +3183,20 @@
                 exitRoom();
             });
         }
+    }
+
+    /**
+     * Dynamically adjusts the video feed layout based on the number of participants.
+     * @param {number} participantsCount - The current number of participants.
+     */
+    function updateVideoLayout(participantsCount) {
+        const grid = document.getElementById('video-feeds-section');
+        if (participantsCount <= 2) {
+            grid.style.gridTemplateColumns = '1fr'; // Single column for 1-2 participants
+        } else {
+            grid.style.gridTemplateColumns = 'repeat(2, 1fr)'; // 2x2 grid for more than 2
+        }
+        // On mobile, CSS media queries will override this to 1fr
     }
 
     /**
@@ -3350,7 +3430,9 @@
 
         try {
           const payload = { contents: chatHistory };
-          const apiKey = "AIzaSyDf6RP1GvUleF7TZsu1Jz6xy48GySXdoaQ"; // Canvas will provide this at runtime
+          // The API key will be provided by the Canvas environment at runtime.
+          // Do not hardcode or validate it here.
+          const apiKey = "AIzaSyBmEW0rkauNzhVD5xRxDlrElJw-7PZi7sc"; 
           const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
           const response = await fetch(apiUrl, {
@@ -3548,6 +3630,34 @@
 
     // Ensure initial active state for pomodoro buttons
     document.querySelector('.pomodoro-time-select button[data-time="25"]').classList.add('active');
+
+    // Restrict room creation/joining when already in a room
+    function restrictRoomActions() {
+        const createRoomButton = document.getElementById('private-room-option');
+        const joinRoomButton = document.getElementById('join-room-option');
+        if (createRoomButton) {
+            createRoomButton.style.pointerEvents = userInRoom ? 'none' : 'auto';
+            createRoomButton.style.opacity = userInRoom ? '0.5' : '1';
+        }
+        if (joinRoomButton) {
+            joinRoomButton.style.pointerEvents = userInRoom ? 'none' : 'auto';
+            joinRoomButton.style.opacity = userInRoom ? '0.5' : '1';
+        }
+    }
+
+    // Call restrictRoomActions on page load and whenever userInRoom status changes
+    document.addEventListener('DOMContentLoaded', restrictRoomActions);
+    // This will be called whenever userInRoom changes
+    Object.defineProperty(window, 'userInRoom', {
+        set: function(value) {
+            this._userInRoom = value;
+            restrictRoomActions();
+        },
+        get: function() {
+            return this._userInRoom;
+        }
+    });
+    window.userInRoom = false; // Initialize the property
 
   </script>
 </body>
