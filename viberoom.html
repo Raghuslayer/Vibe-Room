@@ -3623,7 +3623,7 @@
         
         try {
           const payload = { contents: chatHistory };
-          const apiKey = ""; // Canvas will provide this at runtime
+          const apiKey = "AIzaSyDf6RP1GvUleF7TZsu1Jz6xy48GySXdoaQ"; // Canvas will provide this at runtime
           const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
           const response = await fetch(apiUrl, {
@@ -3786,7 +3786,7 @@
                 }
             }, 1000);
             pomodoroStartPauseButton.innerHTML = '<i class="fas fa-pause"></i>';
-        }
+        } 
         pomodoroRunning = !pomodoroRunning;
     }
 
