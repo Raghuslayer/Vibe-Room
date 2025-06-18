@@ -1006,8 +1006,8 @@
       display: none; /* Hidden by default */
       flex-direction: column;
       width: 100vw;
-      height: 100vh;
-      overflow: hidden; /* Main container should not scroll */
+      height: 100vh; /* Full viewport height */
+      overflow-y: auto; /* Allow scrolling for the entire room content */
       background: #13111C;
       position: relative;
       border: 5px solid transparent; /* For RGB glowing line */
@@ -1036,6 +1036,7 @@
       padding: 15px 20px;
       background: rgba(0, 0, 0, 0.3);
       z-index: 10;
+      flex-shrink: 0; /* Prevent header from shrinking */
     }
 
     .video-call-header h2 {
@@ -1069,22 +1070,36 @@
     .video-call-main-content {
       flex: 1; /* Takes remaining vertical space */
       display: flex;
-      flex-direction: row;
-      overflow: hidden;
-      height: calc(100vh - 70px); /* Adjust based on header height */
+      flex-direction: row; /* Default to row for desktop */
+      min-height: calc(100vh - 70px); /* Ensure it takes most of the screen, allows scrolling if content overflows */
+      overflow-y: auto; /* Allow scrolling for the main content area */
+    }
+
+    /* New styles for left-panel */
+    .left-panel {
+      flex: 3; /* Takes 60% width (3 out of 5 parts) */
+      display: flex;
+      flex-direction: column; /* Make it a column container */
+      background: #221C3E; /* Same background as video-feeds-section */
+      overflow-y: auto; /* Allow scrolling if content overflows in this panel */
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .left-panel::-webkit-scrollbar {
+      display: none;
     }
 
     .video-feeds-section {
-      flex: 0 0 60%; /* Takes 60% width */
+      flex: 4; /* Takes 80% of the left-panel's height */
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive grid */
+      grid-template-columns: repeat(2, 1fr); /* 2x2 grid for 4 participants */
+      grid-template-rows: repeat(2, 1fr);
       gap: 10px;
       padding: 10px;
-      background: #221C3E;
-      overflow-y: auto; /* Enable scrolling for video feeds */
+      overflow-y: auto; /* Enable scrolling for video feeds if they exceed height */
       -ms-overflow-style: none;
       scrollbar-width: none;
-      height: 100%; /* Take full height of its flex container */
+      min-height: 0; /* Important for flex items with overflow */
     }
     .video-feeds-section::-webkit-scrollbar {
       display: none;
@@ -1094,7 +1109,7 @@
       position: relative;
       width: 100%;
       padding-bottom: 75%; /* 4:3 Aspect Ratio (height is 75% of width) */
-      background-color: #000;
+      background-color: #000; /* Black background for inactive/loading feeds */
       border-radius: 10px;
       overflow: hidden;
       display: flex;
@@ -1104,6 +1119,7 @@
       font-size: 1.2em;
       text-align: center;
       flex-direction: column;
+      border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border for feed boxes */
     }
     
     .video-feed-container.placeholder .waiting-message {
@@ -1126,6 +1142,10 @@
       object-fit: cover;
       border-radius: 10px;
       display: block; /* Ensure video is visible by default */
+    }
+
+    .video-feed-container.hidden-feed {
+        display: none !important; /* Hide containers that are not in use */
     }
 
     .video-feed-controls {
@@ -1163,7 +1183,7 @@
 
 
     .right-panel {
-      flex: 0 0 40%; /* Takes 40% width */
+      flex: 2; /* Takes 40% width (2 out of 5 parts) */
       display: flex;
       flex-direction: column;
       background: #1A162A;
@@ -1171,27 +1191,21 @@
       overflow-y: auto; /* Enable scrolling for the right panel */
       -ms-overflow-style: none;
       scrollbar-width: none;
-      height: 100%; /* Take full height of its flex container */
     }
     .right-panel::-webkit-scrollbar {
       display: none;
     }
 
-    .gemini-chat-box, .music-player-section, .pomodoro-section {
+    /* Updated Gemini Chatbox styles */
+    .gemini-chat-box {
       padding: 15px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
       flex-shrink: 0; /* Prevent shrinking below content size */
-      min-height: 150px; /* Ensure a minimum height for visibility */
-      overflow-y: auto; /* Enable internal scrolling if content overflows */
-      -ms-overflow-style: none;
-      scrollbar-width: none;
+      height: 70%; /* Set height to 70% of its parent (.right-panel) */
+      display: flex;
+      flex-direction: column; /* Arrange content vertically */
+      overflow: hidden; /* Hide overflow of the chatbox itself */
     }
-    .gemini-chat-box::-webkit-scrollbar,
-    .music-player-section::-webkit-scrollbar,
-    .pomodoro-section::-webkit-scrollbar {
-      display: none;
-    }
-
 
     .gemini-chat-box h3 {
       font-size: 18px;
@@ -1200,8 +1214,8 @@
     }
 
     .chat-messages {
-      flex: 1;
-      overflow-y: auto;
+      flex: 1; /* Allow messages to take up available space */
+      overflow-y: auto; /* Enable vertical scrolling for chat messages */
       padding-right: 10px; /* For scrollbar space */
       -ms-overflow-style: none;
       scrollbar-width: none;
@@ -1209,7 +1223,7 @@
       flex-direction: column; /* Ensure messages stack vertically */
     }
     .chat-messages::-webkit-scrollbar {
-      display: none;
+      display: none; /* Hide scrollbar for Webkit browsers */
     }
 
     .chat-message {
@@ -1238,6 +1252,7 @@
     .chat-input-container {
       display: flex;
       margin-top: 10px;
+      flex-shrink: 0; /* Prevent input from shrinking */
     }
 
     .chat-input-container input {
@@ -1263,6 +1278,20 @@
 
     .chat-input-container button:hover {
       background: #7a4be0;
+    }
+
+    .music-player-section {
+      padding: 15px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1); /* Add border top as it's now separate */
+      background: #221C3E; /* Match left panel background */
+      flex: 1; /* Takes 20% of the left-panel's height */
+      min-height: 0; /* Important for flex items with overflow */
+      overflow-y: auto; /* Enable internal scrolling if content overflows */
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .music-player-section::-webkit-scrollbar {
+      display: none;
     }
 
     .music-player-section h3 {
@@ -1300,7 +1329,7 @@
         margin: 10px auto;
         -webkit-appearance: none;
         height: 8px;
-        border-radius: 5px;
+        border-radius: 5鸣px;
         background: rgba(255, 255, 255, 0.2);
         outline: none;
         transition: opacity .2s;
@@ -1317,6 +1346,19 @@
         box-shadow: 0 0 5px rgba(255, 123, 84, 0.5);
     }
 
+.pomodoro-section {
+      padding: 15px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Keep border for separation */
+      flex-shrink: 0; /* Prevent shrinking below content size */
+      min-height: 150px; /* Ensure a minimum height for visibility */
+      overflow-y: auto; /* Enable internal scrolling if content overflows */
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .pomodoro-section::-webkit-scrollbar {
+      display: none;
+    }
+
     .pomodoro-section h3 {
       font-size: 18px;
       margin-bottom: 10px;
@@ -1328,26 +1370,6 @@
       font-weight: 700;
       text-align: center;
       margin-bottom: 15px;
-    }
-
-    .pomodoro-controls {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-    }
-
-    .pomodoro-controls button {
-      background: rgba(255, 255, 255, 0.1);
-      border: none;
-      padding: 8px 15px;
-      border-radius: 15px;
-      color: white;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-
-    .pomodoro-controls button:hover {
-      background: rgba(255, 255, 255, 0.2);
     }
 
     .pomodoro-time-select {
@@ -1374,28 +1396,56 @@
       box-shadow: 0 0 10px rgba(138, 43, 226, 0.5);
     }
 
+    .pomodoro-controls {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 15px; /* Added margin-top for separation */
+    }
+
+    .pomodoro-controls button {
+      background: linear-gradient(90deg, #6366F1, #8B5CF6); /* Gradient background */
+      border: none;
+      padding: 12px 20px; /* Increased padding for better touch targets */
+      border-radius: 25px; /* More rounded */
+      color: white;
+      font-size: 18px; /* Larger icon size */
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex; /* To center the icon */
+      justify-content: center;
+      align-items: center;
+      min-width: 50px; /* Ensure a minimum width */
+      min-height: 50px; /* Ensure a minimum height */
+    }
+
+    .pomodoro-controls button:hover {
+      box-shadow: 0 0 15px rgba(99, 102, 241, 0.6); /* Adjusted shadow color */
+      transform: translateY(-2px);
+    }
+
+
     /* Media queries for responsive layout */
     @media (max-width: 768px) {
       .video-call-main-content {
         flex-direction: column; /* Stack vertically on mobile */
         height: auto; /* Allow height to be determined by content */
-        overflow-y: auto; /* Enable scrolling for the entire main content */
+        min-height: auto; /* Remove fixed min-height for mobile */
+        overflow-y: auto; /* Ensure the entire main content scrolls */
       }
-      .video-feeds-section {
-        flex: none; /* Remove flex basis */
-        width: 100%; /* Take full width */
-        height: auto; /* Allow content to dictate height */
-        max-height: 60vh; /* Limit height to prevent excessive scrolling for feeds */
-        grid-template-columns: 1fr; /* Single column on mobile */
-      }
+      .left-panel,
       .right-panel {
         flex: none; /* Remove flex basis */
         width: 100%; /* Take full width */
         height: auto; /* Allow content to dictate height */
         border-left: none;
         border-top: 1px solid rgba(255, 255, 255, 0.1);
-        overflow-y: auto; /* Ensure right panel scrolls */
+        overflow-y: auto; /* Ensure panels scroll */
         padding-bottom: 20px; /* Add some padding at the bottom */
+      }
+      .video-feeds-section {
+        grid-template-columns: 1fr; /* Single column on mobile for better visibility */
+        grid-template-rows: auto; /* Auto rows for stacked feeds */
       }
       .gemini-chat-box, .music-player-section, .pomodoro-section {
         min-height: 180px; /* Slightly more height for better mobile experience */
@@ -1692,36 +1742,48 @@
       </div>
     </header>
     <div class="video-call-main-content">
-      <div class="video-feeds-section" id="video-feeds-section">
-        <!-- Local video feed container is always present -->
-        <div class="video-feed-container" id="local-video-container">
-          <video id="local-video" autoplay muted></video>
-          <div class="video-feed-controls">
-            <button id="local-cam-toggle"><i class="fas fa-video"></i></button>
-            <button id="local-mic-toggle"><i class="fas fa-microphone"></i></button>
+      <div class="left-panel"> <!-- New wrapper for video feeds and music player -->
+        <div class="video-feeds-section" id="video-feeds-section">
+          <!-- Local video feed container is always present -->
+          <div class="video-feed-container" id="local-video-container">
+            <video id="local-video" autoplay muted></video>
+            <div class="video-feed-controls">
+              <button id="local-cam-toggle"><i class="fas fa-video"></i></button>
+              <button id="local-mic-toggle"><i class="fas fa-microphone"></i></button>
+            </div>
+          </div>
+          <!-- Placeholder video feeds for remote participants -->
+          <div class="video-feed-container placeholder" data-peer-id="placeholder-1">
+            <div class="waiting-message">
+              <i class="fas fa-spinner fa-spin"></i>
+              <p>Waiting for participant...</p>
+            </div>
+            <video></video>
+          </div>
+          <div class="video-feed-container placeholder" data-peer-id="placeholder-2">
+            <div class="waiting-message">
+              <i class="fas fa-spinner fa-spin"></i>
+              <p>Waiting for participant...</p>
+            </div>
+            <video></video>
+          </div>
+          <div class="video-feed-container placeholder" data-peer-id="placeholder-3">
+            <div class="waiting-message">
+              <i class="fas fa-spinner fa-spin"></i>
+              <p>Waiting for participant...</p>
+            </div>
+            <video></video>
           </div>
         </div>
-        <!-- Placeholder video feeds for remote participants -->
-        <div class="video-feed-container placeholder" data-peer-id="placeholder-1">
-          <div class="waiting-message">
-            <i class="fas fa-spinner fa-spin"></i>
-            <p>Waiting for participant...</p>
+        <div class="music-player-section"> <!-- Moved here -->
+          <h3>Music Player</h3>
+          <p id="current-song-title">No song playing</p>
+          <input type="range" id="music-volume-slider" min="0" max="1" step="0.01" value="0.5">
+          <div class="music-controls">
+            <button id="music-prev"><i class="fas fa-backward"></i></button>
+            <button id="music-play-pause"><i class="fas fa-play"></i></button>
+            <button id="music-next"><i class="fas fa-forward"></i></button>
           </div>
-          <video></video>
-        </div>
-        <div class="video-feed-container placeholder" data-peer-id="placeholder-2">
-          <div class="waiting-message">
-            <i class="fas fa-spinner fa-spin"></i>
-            <p>Waiting for participant...</p>
-          </div>
-          <video></video>
-        </div>
-        <div class="video-feed-container placeholder" data-peer-id="placeholder-3">
-          <div class="waiting-message">
-            <i class="fas fa-spinner fa-spin"></i>
-            <p>Waiting for participant...</p>
-          </div>
-          <video></video>
         </div>
       </div>
       <div class="right-panel">
@@ -1732,16 +1794,6 @@
           <div class="chat-input-container">
             <input type="text" id="gemini-chat-input" placeholder="Ask Gemini...">
             <button id="send-gemini-chat"><i class="fas fa-paper-plane"></i></button>
-          </div>
-        </div>
-        <div class="music-player-section">
-          <h3>Music Player</h3>
-          <p id="current-song-title">No song playing</p>
-          <input type="range" id="music-volume-slider" min="0" max="1" step="0.01" value="0.5">
-          <div class="music-controls">
-            <button id="music-prev"><i class="fas fa-backward"></i></button>
-            <button id="music-play-pause"><i class="fas fa-play"></i></button>
-            <button id="music-next"><i class="fas fa-forward"></i></button>
           </div>
         </div>
         <div class="pomodoro-section">
@@ -1825,6 +1877,9 @@
     const provider = new GoogleAuthProvider();
 
     // Get the app ID from the environment or use a default
+    // IMPORTANT: For local testing, if the rules are specifically for 'viberoom-3af1f',
+    // you might want to hardcode this temporarily for testing.
+    // E.g., const appId = 'viberoom-3af1f';
     const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-viberoom-app';
 
     // Function to get user profile document reference
@@ -1832,11 +1887,13 @@
         // Corrected path to ensure even number of segments for a document reference.
         // It now points to a document named 'data' within the 'profile' sub-collection
         // under the user's UID.
+        console.log(`[DEBUG] Constructing user profile doc ref for UID: ${uid} with appId: ${appId}`);
         return doc(db, 'artifacts', appId, 'users', uid, 'profile', 'data');
     }
 
     // Function to get room document reference
     function getRoomDocRef(roomId) {
+        console.log(`[DEBUG] Constructing room doc ref for roomId: ${roomId} with appId: ${appId}`);
         return doc(db, 'artifacts', appId, 'public', 'data', 'rooms', roomId);
     }
 
@@ -1964,8 +2021,6 @@
     const connectedPeers = {}; // Stores PeerJS connections: {peerId: {call: MediaConnection, stream: MediaStream, videoElement: HTMLVideoElement, controls: HTMLDivElement}}
     let currentRoomId = null;
     let isRoomCreator = false;
-    let roomParticipantsListener = null; // To store onSnapshot listener for room participants
-    let roomStatusListener = null; // To store onSnapshot listener for room status
     let userInRoom = false; // Flag to track if user is in a room
 
     // PeerJS Reconnection variables
@@ -2196,6 +2251,7 @@
 
           // Store user profile data in Firestore. The path is now:
           // artifacts/{appId}/users/{uid}/profile/data
+          console.log(`[DEBUG] Attempting to set profile for UID: ${user.uid} with effective appId: ${appId}`);
           await setDoc(getUserProfileDocRef(user.uid), {
             username,
             name,
@@ -2267,12 +2323,14 @@
           };
           // Store user profile data in Firestore. The path is now:
           // artifacts/{appId}/users/{uid}/profile/data
+          console.log(`[DEBUG] Attempting to set profile for UID: ${user.uid} with effective appId: ${appId} (Google Sign-in New User)`);
           await setDoc(getUserProfileDocRef(user.uid), userData);
         } else {
           // If user exists, update their profile image if it's a Google photo and not already set
           if (user.photoURL && !userDoc.data().profileImage) {
             // Update user profile data in Firestore. The path is now:
             // artifacts/{appId}/users/{uid}/profile/data
+            console.log(`[DEBUG] Attempting to update profile image for UID: ${user.uid} with effective appId: ${appId} (Google Sign-in Existing User)`);
             await updateDoc(getUserProfileDocRef(user.uid), { profileImage: user.photoURL });
           }
         }
@@ -2450,11 +2508,14 @@
         const userStatusRTDBRef = ref(rtdb, 'presence/' + userId);
         const userDocRef = getUserProfileDocRef(userId);
 
+        console.log(`[DEBUG] setUserOnlineStatus - userId: ${userId}, isOnline: ${isOnline}, Firestore Path: artifacts/${appId}/users/${userId}/profile/data`);
+
         if (isOnline) {
             // Set up onDisconnect to set status to offline when client disconnects
             onDisconnect(userStatusRTDBRef).set(false).then(() => {
                 // If onDisconnect is set successfully, set user's current status to true
                 set(userStatusRTDBRef, true);
+                console.log(`[DEBUG] RTDB presence set for ${userId}`);
             }).catch(error => {
                 console.error("Error setting onDisconnect or initial RTDB presence:", error);
                 // Even if RTDB fails, try to update Firestore.
@@ -2466,6 +2527,7 @@
             // Update Firestore for display purposes (always try to set/update)
             try {
                 await setDoc(userDocRef, { status: 'Online' }, { merge: true });
+                console.log(`[DEBUG] Firestore status set to Online for ${userId}`);
             } catch (e) {
                 console.error("Error updating Firestore status to online:", e);
             }
@@ -2473,8 +2535,10 @@
             // If logging out explicitly, cancel onDisconnect and set offline immediately
             onDisconnect(userStatusRTDBRef).cancel(); // Cancel any pending onDisconnect for this user
             set(userStatusRTDBRef, false); // Set offline immediately in RTDB
+            console.log(`[DEBUG] RTDB presence set to Offline for ${userId}`);
             try {
                 await setDoc(userDocRef, { status: 'Offline' }, { merge: true });
+                console.log(`[DEBUG] Firestore status set to Offline for ${userId}`);
             } catch (e) {
                 console.error("Error updating Firestore status to offline:", e);
             }
@@ -2496,6 +2560,7 @@
       }
 
       const userDocRef = getUserProfileDocRef(user.uid); // Changed
+      console.log(`[DEBUG] loadProfile - Attempting to fetch profile for UID: ${user.uid} from Firestore Path: artifacts/${appId}/users/${user.uid}/profile/data`);
       try {
         const docSnap = await getDoc(userDocRef);
         if (docSnap.exists()) {
@@ -2523,10 +2588,12 @@
           authContainer.classList.add('hidden');
           profileSection.classList.remove('hidden');
           profileSection.classList.add('visible');
+          console.log(`[DEBUG] Profile loaded successfully for UID: ${user.uid}`);
         } else {
           // Default values if no profile document exists
           // This block ensures that even if the document doesn't exist yet,
           // the UI is populated with reasonable defaults or user's Google profile info.
+          console.log(`[DEBUG] Profile document does not exist for UID: ${user.uid}. Populating with defaults.`);
           profileUsernameDisplay.textContent = user.displayName || '@' + user.email.split('@')[0];
           profileNameDisplay.textContent = user.displayName || 'User Name';
           profileEmailDisplay.textContent = user.email || 'No Email';
@@ -2632,6 +2699,7 @@
         await updateProfile(user, { displayName: username, photoURL: profileImageUrl });
         // Update user profile data in Firestore. The path is now:
         // artifacts/{appId}/users/{uid}/profile/data
+        console.log(`[DEBUG] Attempting to update profile for UID: ${user.uid} with effective appId: ${appId}`);
         await updateDoc(getUserProfileDocRef(user.uid), {
           username,
           name,
@@ -2680,6 +2748,7 @@
     onAuthStateChanged(auth, async (user) => {
         if (user) {
             console.log("User signed in:", user.uid);
+            console.log(`[DEBUG] Current effective appId being used: ${appId}`);
             // Ensure profile data is loaded and status is set online.
             // loadProfile will also set the initial status display.
             await loadProfile(user);
@@ -2687,6 +2756,7 @@
 
             // Listen for changes in the user's Firestore document to update the status display
             const userDocRef = getUserProfileDocRef(user.uid);
+            console.log(`[DEBUG] Setting up onSnapshot listener for user profile: artifacts/${appId}/users/${user.uid}/profile/data`);
             onSnapshot(userDocRef, (docSnap) => {
                 if (docSnap.exists()) {
                     const profile = docSnap.data();
@@ -2875,6 +2945,7 @@
             try {
                 // Store room data in Firestore. The path is now:
                 // artifacts/{appId}/public/data/rooms/{roomId}
+                console.log(`[DEBUG] Creating room: ${roomId} with effective appId: ${appId}`);
                 await setDoc(getRoomDocRef(roomId), {
                     creatorId: user.uid,
                     maxParticipants: maxPersons,
@@ -2910,6 +2981,7 @@
             showLoadingScreen();
             try {
                 const roomDocRef = getRoomDocRef(roomId); // Changed
+                console.log(`[DEBUG] Attempting to join room: ${roomId} with effective appId: ${appId}`);
                 const roomSnap = await getDoc(roomDocRef);
 
                 if (!roomSnap.exists()) {
@@ -2946,6 +3018,7 @@
 
                 // Add user to participants
                 const updatedParticipants = [...roomData.participants, user.uid];
+                console.log(`[DEBUG] Adding user ${user.uid} to room ${roomId}`);
                 await updateDoc(roomDocRef, { participants: updatedParticipants });
 
                 currentRoomId = roomId;
@@ -2988,6 +3061,7 @@
     startPrivateRoomButton.addEventListener('click', async () => {
         if (currentRoomId) {
             privateRoomModal.style.display = 'none';
+            console.log(`[DEBUG] Starting private room call for roomId: ${currentRoomId} with effective appId: ${appId}`);
             const roomDoc = await getDoc(getRoomDocRef(currentRoomId)); // Changed
             if (roomDoc.exists()) {
                 startVideoCall(roomDoc.data().maxParticipants);
@@ -3004,9 +3078,14 @@
 
     /**
      * Updates the grid layout of video feeds based on the number of active participants.
+     * Also manages visibility of placeholder containers.
      * @param {number} activeParticipantsCount - The current number of active video feeds (including local).
      */
     function updateVideoFeedLayout(activeParticipantsCount) {
+        // Reset grid styles first to ensure proper recalculation
+        videoFeedsSection.style.gridTemplateColumns = '';
+        videoFeedsSection.style.gridTemplateRows = '';
+
         if (activeParticipantsCount === 1) {
             videoFeedsSection.style.gridTemplateColumns = '1fr';
             videoFeedsSection.style.gridTemplateRows = '1fr';
@@ -3017,13 +3096,25 @@
             videoFeedsSection.style.gridTemplateColumns = '1fr 1fr';
             videoFeedsSection.style.gridTemplateRows = '1fr 1fr';
         }
+
         // Hide/show placeholder containers based on activeParticipantsCount
         const allFeedContainers = videoFeedsSection.querySelectorAll('.video-feed-container');
         for (let i = 0; i < allFeedContainers.length; i++) {
+            // Ensure local-video-container is always visible and not treated as a placeholder for hiding
+            if (allFeedContainers[i].id === 'local-video-container') {
+                allFeedContainers[i].classList.remove('hidden-feed');
+                continue;
+            }
+
+            // For other containers, hide if their index is beyond the active count
+            // The local-video-container is always at index 0.
+            // So, if activeParticipantsCount is 1 (only local), hide placeholders at index 1, 2, 3.
+            // If activeParticipantsCount is 2 (local + 1 remote), hide placeholders at index 2, 3.
+            // And so on.
             if (i < activeParticipantsCount) {
-                allFeedContainers[i].classList.remove('hidden-feed'); // Ensure it's visible
+                allFeedContainers[i].classList.remove('hidden-feed');
             } else {
-                allFeedContainers[i].classList.add('hidden-feed'); // Hide extra placeholders
+                allFeedContainers[i].classList.add('hidden-feed');
             }
         }
     }
@@ -3053,10 +3144,11 @@
             reconnectTimeoutId = null;
         }
 
-        // Reset all video feed containers to placeholder state
+        // Reset all video feed containers to placeholder state, except local
         const allFeedContainers = videoFeedsSection.querySelectorAll('.video-feed-container');
         allFeedContainers.forEach((container, index) => {
-            if (container.id !== 'local-video-container') { // Don't reset local video
+            if (container.id !== 'local-video-container') {
+                // Revert placeholder containers to their initial state
                 container.classList.add('placeholder');
                 container.innerHTML = `
                     <div class="waiting-message">
@@ -3066,9 +3158,10 @@
                     <video></video>
                 `;
                 container.querySelector('video').srcObject = null;
+                container.removeAttribute('data-peer-id'); // Remove any assigned peer ID
             }
             // Initially hide all but local, will be shown by updateVideoFeedLayout
-            if (index > 0) {
+            if (index > 0) { // Hide all placeholders initially
                 container.classList.add('hidden-feed');
             }
         });
@@ -3093,7 +3186,7 @@
             }
             
             peer = new Peer(auth.currentUser.uid, {
-                host: '0.peerjs.com', // Changed to a more stable PeerServer cloud instance
+                host: '0.peerjs.com', // Changed to the default PeerJS cloud server
                 secure: true, // Use HTTPS
                 port: 443,
                 debug: 3 // Add debug level for more verbose logging
@@ -3134,6 +3227,8 @@
                             const roomData = docSnap.data();
                             const currentParticipants = roomData.participants || [];
                             const connectedPeerIds = Object.keys(connectedPeers);
+                            
+                            // Calculate active participants including local user
                             const activeParticipantsCount = currentParticipants.length;
 
                             // Update layout based on current number of participants
@@ -3167,6 +3262,7 @@
                                             <video></video>
                                         `;
                                         container.querySelector('video').srcObject = null;
+                                        container.removeAttribute('data-peer-id'); // Remove peer ID
                                         container.classList.add('hidden-feed'); // Hide it until new participant
                                     }
                                     delete connectedPeers[connectedPeerId];
@@ -3305,6 +3401,10 @@
                 controls: controlsDiv,
                 container: videoContainer // Store the container reference
             };
+
+            // Update layout after a new peer connects
+            const activeParticipantsCount = 1 + Object.keys(connectedPeers).length; // 1 for local user
+            updateVideoFeedLayout(activeParticipantsCount);
         });
 
         call.on('close', () => {
@@ -3437,6 +3537,7 @@
         // Remove user from room participants in Firestore
         if (currentRoomId && auth.currentUser) {
             const roomDocRef = getRoomDocRef(currentRoomId); // Changed
+            console.log(`[DEBUG] Exiting room: Attempting to remove user ${auth.currentUser.uid} from room ${currentRoomId} with effective appId: ${appId}`);
             const roomSnap = await getDoc(roomDocRef);
             if (roomSnap.exists()) {
                 const roomData = roomSnap.data();
@@ -3473,6 +3574,7 @@
                 try {
                     // Set room to inactive and then delete
                     const roomDocRef = getRoomDocRef(currentRoomId); // Changed
+                    console.log(`[DEBUG] Ending room: Setting room ${currentRoomId} to inactive and deleting with effective appId: ${appId}`);
                     await updateDoc(roomDocRef, { isActive: false }); // Signal other users
                     await deleteDoc(roomDocRef); // Delete the room
                     showCustomAlert('Room ended for all participants.').then(() => {
@@ -3505,6 +3607,8 @@
         userChatBubble.textContent = userMessage;
         geminiChatMessages.appendChild(userChatBubble);
         geminiChatMessages.scrollTop = geminiChatMessages.scrollHeight; // Scroll to bottom
+
+        // Clear input after sending
         geminiChatInput.value = '';
 
         // Add to chat history
@@ -3516,10 +3620,10 @@
         loadingBubble.innerHTML = `<p>Gemini is typing<span class="loading-dots"><span>.</span><span>.</span><span>.</span></span></p>`;
         geminiChatMessages.appendChild(loadingBubble);
         geminiChatMessages.scrollTop = geminiChatMessages.scrollHeight;
-
+        
         try {
           const payload = { contents: chatHistory };
-          const apiKey = "AIzaSyBmEW0rkauNzhVD5xRxDlrElJw-7PZi7sc"; // Canvas will provide this at runtime
+          const apiKey = ""; // Canvas will provide this at runtime
           const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
           const response = await fetch(apiUrl, {
